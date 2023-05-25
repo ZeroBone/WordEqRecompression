@@ -1,0 +1,166 @@
+\documentclass[handout]{beamer}
+% \documentclass{beamer}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage{amsmath, amsthm, amsfonts, amssymb}
+\usepackage{mathrsfs}
+
+\usepackage[sanserif]{complexity}
+
+% Algorithms
+\usepackage[ruled]{algorithm2e}
+\SetKw{Continue}{continue}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\title[The recompression technique for WE]{The recompression technique for word equations}
+\author{Alexander Mayorov}
+\institute[RPTU]{RPTU Kaiserslautern--Landau}
+
+\def\Mstruct{\mathcal{M}}
+
+\def\N{\mathbb{N}_{\ge 0}}
+\def\Npos{\mathbb{N}_{\ge 1}}
+\def\Nsimpl{\mathbb{N}}
+\def\R{\mathbb{R}}
+\def\Z{\mathbb{Z}}
+\def\Q{\mathbb{Q}}
+\def\P{\mathcal{P}}
+
+\newlang{\EUF}{EUF}
+
+\DeclareMathOperator{\Disjuncts}{DNF}
+\DeclareMathOperator{\DisjunctsOf}{DisjOf}
+
+\def\DisjPhi{\Disjuncts(\varphi)}
+\def\DisjPhiPrime{\Disjuncts(\varphi')}
+\def\DisjNegPhi{\Disjuncts(\neg\varphi)}
+\def\DisjTrue{\Disjuncts(\top)}
+
+\DeclareMathOperator{\CDCL}{CDCL}
+\def\CDCLT{\CDCL(\mathrm{T})}
+
+\begin{document}
+	
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{The problem}
+
+Fix a first-order structure $ \Mstruct $ and consider an $ \Mstruct $-suitable formula $ \varphi(x_1, \dots, x_n) $. Let $ \Pi $ be a partition of $ \{x_1, \dots, x_n\} $.
+
+\begin{definition}[$ \Pi $-decomposable]
+	We say that a formula $ \varphi $ \textit{respects} $ \Pi $, if $ \varphi $ is a Boolean combination of formulae each having its free variables within some element of $ \Pi $.
+	
+	A formula $ \varphi $ is said to be $ \Pi $-decomposable, if there exists an equivalent $ \Pi $-respecting formula (a.k.a. $ \Pi $-decomposition).
+\end{definition}
+
+\begin{example}[$ \Mstruct = (\Q, +, <, =, 0, 1) $]
+	Let $ \Pi := \{\{x\}, \{y\}\} $. The formula $ \varphi := x + y = 2 \wedge x = 1 $ is $ \Pi $-decomposable since $ \varphi \equiv x = 1 \wedge y = 1 $, whereas $ \varphi := x = y $ is not.
+\end{example}
+
+\begin{example}[$ \Mstruct = \EUF $]
+	The formula $ \varphi := g(h(x)) = f(y) \wedge h(x) = f(c) $ is $ \Pi $-decomposable for $ \Pi := \{\{x\}, \{y\}\} $, because $ \varphi \equiv g(f(c)) = f(y) \wedge h(x) = f(c) $.
+\end{example}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{problem}[The variable decomposition problem]
+	Given a formula $ \varphi(x_1, \dots, x_n) $ and a partition $ \Pi $ of $ \{x_1, \dots, x_n\} $, decide whether $ \varphi $ is $ \Pi $-decomposable. If yes, compute a possible $ \Pi $-decomposition.
+\end{problem}
+
+\begin{problem}[The variable independence problem]
+	Given a formula $ \varphi(x_1, \dots, x_n) $ and variables $ x_i, x_j $, decide whether there exists a partition $ \Pi $ with $ x_i $ and $ x_j $ being in different blocks of $ \Pi $, such that $ \varphi $ is $ \Pi $-decomposable (a.k.a. $ x_i $ and $ x_j $ are independent).
+\end{problem}
+
+\begin{example}[$ \Mstruct = (\Q, +, <, =, 0, 1) $]
+	Let $ \Pi := \{\{x\}, \{y\}\} $. In $ \varphi := x + y = 2 \wedge x = 1 $, the variables $ x $ and $ y $ are independent. This is not the case for $ \varphi := x = y $.
+\end{example}
+
+Both problems are known to be \alert{undecidable} in general \cite{libkin:2003}.
+
+\vspace{2pt}
+
+$ \rightsquigarrow $ we thus focus only on quantifier-free fragments of FOL.
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Nature of the problem and my main result}
+	
+	Intuitively, deciding $ \Pi $-decomposability is a hard problem because it is hard to witness the fact that some formula is not $ \Pi $-decomposable, even for fixed first-order theories.
+	
+	\vspace{5pt}
+	
+	All such known witnesses work either only for ``discrete'' fragments of first-order logic, or they rely on very general techniques which yield decision procedures whose complexity is either high in theory, or infeasible in practice, or both \cite{libkin:2000, libkin:2003, hague:2020, markgraf:2021, veanes:2017}.
+	
+	\vspace{5pt}
+	
+	\textbf{My main result}: a novel technique for solving the variable decomposability problem over quantifier-free first-order theories satisfying certain convexity assumptions. This technique yields an efficient decision procedure, which moreover can compute a possible $ \Pi $-decomposition if one exists.
+\end{frame}
+
+\begin{frame}
+	\frametitle{First step: reduce to another problem}
+	
+	\begin{problem}[The covering problem]
+		Given a formula $ \varphi $, a binary partition $ \Pi $ and a predicate set $ \Gamma \in \DisjPhi $, compute a $ \Pi $-respecting formula $ \psi $ such that \begin{itemize}
+			\item $ \Gamma \models \psi $
+			\item $ \psi \models \varphi $ if $ \varphi $ is $ \Pi $-decomposable
+		\end{itemize}
+	\end{problem}
+	
+	\begin{theorem}
+		Suppose the conjunctive fragment of the theory of $ \Mstruct $ is decidable in polynomial time. Then there exists a co-nondeterministic $ O(2^{O(n)} \cdot \poly(n + m)) $-time Turing reduction from the variable decomposition problem to the covering problem, where $ n $ is the size of $ \varphi $ and $ m $ is the maximum possible size of the $ \psi $ formula produced by the oracle for the covering problem.
+	\end{theorem}
+	
+\end{frame}
+
+\begin{frame}
+	
+	\begin{proof}[Proof sketch]
+		For every $ \Gamma \in \DisjPhi $, we call the oracle solving the covering problem and obtain a $ \Pi $-respecting formula $ \psi_\Gamma $ such that $ \Gamma \models \psi_\Gamma $ and $ \varphi $ being $ \Pi $-decomposable implies $ \psi_\Gamma \models \varphi $. If for all $ \Gamma \in \DisjPhi $, $ \psi_\Gamma \models \varphi $, then we return that the formula is $ \Pi $-decomposable and output the $ \Pi $-decomposition \[
+		\varphi \equiv \bigvee_{\Gamma \in \DisjPhi} \psi_\Gamma
+		\] Otherwise, we reject the formula $ \varphi $ as being not $ \Pi $-decomposable and terminate.
+	\end{proof}
+
+	\begin{theorem}
+		If the conjunctive fragment of the theory of $ \Mstruct $ is decidable in polynomial time, $ \Mstruct $ satisfies the small model property, and membership of a small model in $ \psi $ is in $ \NP $, then the above reduction yields a $ \coNP $ algorithm for the variable decomposition problem.
+	\end{theorem}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Conclusion}
+	
+	\textbf{Main novel technique}: model flooding
+	
+	\vspace{10pt}
+	
+	\textbf{Best known upper bound}: double exponential
+	
+	\vspace{10pt}
+	
+	With my approach, we obtain:
+	
+	\begin{theorem}
+		In rational linear arithmetic, the variable decomposition problem is $ \coNP $-hard and in $ \PSPACE $. The same holds for any convex quantifier-free first-order theory.
+	\end{theorem}
+	
+	\vspace{5pt}
+	
+	The logic has to satisfy only certain \textit{convexity conditions} in order for the approach to work. Moreover, unlike known approaches, my algorithm can be easily integrated into $ \CDCLT $, which makes it also useful in practice.
+	
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+\bibliographystyle{amsalpha}
+\bibliography{we_recompression}
+\end{frame}
+
+\end{document}

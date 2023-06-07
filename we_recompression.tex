@@ -9,6 +9,8 @@
 
 \usepackage{oubraces}
 
+\usepackage{tikz}
+
 \usepackage[sanserif]{complexity}
 
 % Algorithms
@@ -56,7 +58,12 @@
 \newcommand{\var}[1]{\textcolor{blue}{#1}}
 \newcommand{\sol}[1]{\textcolor{orange}{#1}}
 
+\definecolor{OliveGreen}{rgb}{0,0.6,0}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
 \definecolor{magentazb}{RGB}{255,0,255}
+
+\newcommand{\freshVar}[1]{\textcolor{red}{#1}}
+\newcommand{\anotherFreshVar}[1]{\textcolor{OliveGreen}{#1}}
 
 \newenvironment<>{openproblem}[1][]{%
 	\setbeamercolor{block title}{fg=white,bg=magentazb}%
@@ -116,7 +123,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	
 	\begin{itemize}
 		\item Consider the word equation $ ca\var{y}aa\var{x}a = \var{x}aaaca\var{y} $
-		\item We visualize a possible solution \[
+		\item We visualize the solution \[
 			\varphi(\var{x}) := \sol{cabcba}
 			\quad\quad \varphi(\var{y}) := \sol{bcbaa}
 		\] succinctly as follows: \[
@@ -129,8 +136,41 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	
 \end{frame}
 
+\newcommand{\stepdown}[1]{
+	\begin{center}
+		\begin{tabular}{c c}
+			$ \Downarrow $ & #1
+		\end{tabular}
+	\end{center}
+}
+
 \begin{frame}
-	\frametitle{Intuition}
+	\frametitle{Intuition: pair compression}
+	
+	\[
+		\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
+		{&c\ a&\ &\sol{b\ c\ b\ a}&\ &a&\ &a\ a&\ &c\ a&\ &\sol{b\ c\ b\ a}&\ a}%
+		{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
+	\]
+	
+	\stepdown{Compress $ \sol{ba} \rightsquigarrow \freshVar{d} $}
+	
+	\[
+	\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
+	{&c\ a&\ &\sol{b\ c}\ \freshVar{d}&\ &a&\ &a\ a&\ &c\ a&\ &\sol{b\ c}\ \freshVar{d}&\ a}%
+	{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
+	\]
+	
+	\stepdown{Compress $ ca \rightsquigarrow \anotherFreshVar{e} $}
+	
+	\[
+	\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
+	{&\anotherFreshVar{e}&\ &\sol{b\ c}\ \freshVar{d}&\ &a&\ &a\ a&\ &\anotherFreshVar{e}&\ &\sol{b\ c}\ \freshVar{d}&\ a}%
+	{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
+	\]
+	
+	\stepdown{$ \dots $}
+	
 \end{frame}
 
 \begin{frame}[allowframebreaks]

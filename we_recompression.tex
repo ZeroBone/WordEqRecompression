@@ -20,9 +20,9 @@
 \author{Alexander Mayorov}
 \institute[RPTU]{University of Kaiserslautern--Landau (RPTU)}
 
-\newclass{\TWOEXP}{2EXPTIME}
-\newclass{\THREEEXP}{3EXPTIME}
-\newclass{\FOUREXP}{4EXPTIME}
+% \newclass{\TWOEXP}{2EXPTIME}
+\newclass{\THREENEXP}{3NEXPTIME}
+\newclass{\FOURNEXP}{4NEXPTIME}
 \renewclass{\EXP}{EXPTIME}
 \renewclass{\NEXP}{NEXPTIME}
 
@@ -93,11 +93,11 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 
 \begin{itemize}
 	\item[1977] Word equations are decidable \cite{makanin:1977}; very high complexity;
-	\item[1990] Makanin's algorithm \cite{makanin:1977} improved to run in $ \FOUREXP $ \cite{jaffar:1990, schulz:1990};
-	\item[1996] Further improvement to $ \THREEEXP $ \cite{koscielski_pacholski:1996};
+	\item[1990] Makanin's algorithm \cite{makanin:1977} improved to run in $ \FOURNEXP $ \cite{jaffar:1990, schulz:1990};
+	\item[1996] Further improvement to $ \THREENEXP $ \cite{koscielski_pacholski:1996};
 	\item[1998] Further improvement to $ \EXPSPACE $ \cite{gutierrez:1998};
 	\item[1999] $ \NEXP $ algorithm via a double-exponential upper bound on the size of the length-minimal solution \cite{plandowski:1999};
-	\item[2004] $ \PSPACE $ algorithm via rewriting system \cite{plandowski:2004}. Soundness trivial, complicated proof of completeness;
+	\item[2004] $ \PSPACE $ algorithm via a rewriting system \cite{plandowski:2004}. Soundness trivial, complicated proof of completeness;
 	\item[2016] $ \PSPACE $ algorithm via the \textit{recompression technique} \cite{jez:2016};
 \end{itemize}
 
@@ -107,6 +107,12 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 
 % $ \rightsquigarrow $
 
+\end{frame}
+
+\begin{frame}
+	\frametitle{Crux of the technique}
+	
+	
 \end{frame}
 
 \begin{frame}[allowframebreaks]

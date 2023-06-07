@@ -7,6 +7,8 @@
 \usepackage{amsmath, amsthm, amsfonts, amssymb}
 \usepackage{mathrsfs}
 
+\usepackage{oubraces}
+
 \usepackage[sanserif]{complexity}
 
 % Algorithms
@@ -110,9 +112,25 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \end{frame}
 
 \begin{frame}
-	\frametitle{Crux of the technique}
+	\frametitle{Notation}
 	
+	\begin{itemize}
+		\item Consider the word equation $ ca\var{y}aa\var{x}a = \var{x}aaaca\var{y} $
+		\item We visualize a possible solution \[
+			\varphi(\var{x}) := \sol{cabcba}
+			\quad\quad \varphi(\var{y}) := \sol{bcbaa}
+		\] succinctly as follows: \[
+		\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
+		{&c\ a&\ &\sol{b\ c\ b\ a}&\ &a&\ &a\ a&\ &c\ a&\ &\sol{b\ c\ b\ a}&\ a}%
+		{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
+		\]
+		\item Over-braces encode the variables appearing on the left-hand side $ ca\var{y}aa\var{x}a $ of the equation, while the under-braces indicate the variables occuring on the right-hand side $ \var{x}aaaca\var{y} $
+	\end{itemize}
 	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Intuition}
 \end{frame}
 
 \begin{frame}[allowframebreaks]

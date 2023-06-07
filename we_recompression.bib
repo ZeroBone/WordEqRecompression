@@ -1,5 +1,5 @@
-@article{recompression:jez:2016,
-	author = {Je\.{z}, Artur},
+@article{jez:2016,
+	author = {Je{\.z}, Artur},
 	title = {Recompression: A Simple and Powerful Technique for Word Equations},
 	year = {2016},
 	issue_date = {March 2016},
@@ -10,10 +10,111 @@
 	issn = {0004-5411},
 	url = {https://doi.org/10.1145/2743014},
 	doi = {10.1145/2743014},
-	abstract = {In this article, we present an application of a simple technique of local recompression, previously developed by the author in the context algorithms for compressed strings [Je\.{z} 2014a, 2015b, 2015a], to word equations. The technique is based on local modification of variables (replacing X by aX or Xa) and iterative replacement of pairs of letters occurring in the equation by a “fresh” letter, which can be seen as a bottom-up compression of the solution of the given word equation, or, to be more specific, building a Straight-Line Programme for the solution of the word equation.Using this technique, we give new, independent, and self-contained proofs of many known results for word equations. To be more specific, the presented (nondeterministic) algorithm runs in O(n log n space and in time polynomial in n and log N, where n is the size of the input equation and N the size of the length-minimal solution of the word equation. Furthermore, for O(1) variables, the bound on the space consumption is in fact linear, that is, O(m), where m is the size of the space used by the input. This yields that for each k the set of satisfiable word equations with k variables is context sensitive. The presented algorithm can be easily generalised to a generator of all solutions of the given word equation (without increasing the space usage). Furthermore, a further analysis of the algorithm yields an independent proof of doubly exponential upper bound on the size of the length-minimal solution. The presented algorithm does not use exponential bound on the exponent of periodicity. Conversely, the analysis of the algorithm yields an independent proof of the exponential bound on exponent of periodicity.},
+	abstract = {In this article, we present an application of a simple technique of local recompression, previously developed by the author in the context algorithms for compressed strings [Je{\.z} 2014a, 2015b, 2015a], to word equations. The technique is based on local modification of variables (replacing X by aX or Xa) and iterative replacement of pairs of letters occurring in the equation by a “fresh” letter, which can be seen as a bottom-up compression of the solution of the given word equation, or, to be more specific, building a Straight-Line Programme for the solution of the word equation.Using this technique, we give new, independent, and self-contained proofs of many known results for word equations. To be more specific, the presented (nondeterministic) algorithm runs in O(n log n space and in time polynomial in n and log N, where n is the size of the input equation and N the size of the length-minimal solution of the word equation. Furthermore, for O(1) variables, the bound on the space consumption is in fact linear, that is, O(m), where m is the size of the space used by the input. This yields that for each k the set of satisfiable word equations with k variables is context sensitive. The presented algorithm can be easily generalised to a generator of all solutions of the given word equation (without increasing the space usage). Furthermore, a further analysis of the algorithm yields an independent proof of doubly exponential upper bound on the size of the length-minimal solution. The presented algorithm does not use exponential bound on the exponent of periodicity. Conversely, the analysis of the algorithm yields an independent proof of the exponential bound on exponent of periodicity.},
 	journal = {J. ACM},
 	month = {feb},
 	articleno = {4},
 	numpages = {51},
 	keywords = {word equations, string unification, Exponent of periodicity, semantic unification}
+}
+
+@article{makanin:1977,
+	title={The problem of solvability of equations in a free semigroup},
+	author={Makanin, Gennady S},
+	journal={Mat. Sbornik},
+	volume={32},
+	number={2},
+	pages={129--198},
+	year={1977}
+}
+
+@article{jaffar:1990,
+	author = {Jaffar, Joxan},
+	title = {Minimal and Complete Word Unification},
+	year = {1990},
+	issue_date = {Jan. 1990},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	volume = {37},
+	number = {1},
+	issn = {0004-5411},
+	url = {https://doi.org/10.1145/78935.78938},
+	doi = {10.1145/78935.78938},
+	abstract = {The fundamental satisfiability problem for word equations has been solved recently by Makanin. However, this algorithm is purely a decision algorithm. The main result of this paper solves the complementary problem of generating the set of all solutions. Specifically, the algorithm in this paper generates, given a word equation, a minimal and complete set of unifiers. It stops if this set is finite.},
+	journal = {J. ACM},
+	month = {jan},
+	pages = {47–85},
+	numpages = {39}
+}
+
+@InProceedings{schulz:1990,
+	author="Schulz, Klaus U.",
+	editor="Schulz, K. U.",
+	title="Makanin's algorithm for word equations-two improvements and a generalization",
+	booktitle="Word Equations and Related Topics",
+	year="1992",
+	publisher="Springer Berlin Heidelberg",
+	address="Berlin, Heidelberg",
+	pages="85--150",
+	abstract="In 1977 G.S. Makanin [Mak] proved that it is decidable whether a word equation has a solution or not. Here we describe two improvements of Makanin's algorithm which bring it nearer to the area of practical applicability: a simple pre-algorithm is suggested which decides the solvability of word equations with not more than two occurrences of each variable and which partially solves and simplifies the decision procedure for all other equations. A new transformation procedure is given which applies to arbitrary position equations and has several advantages. In a separate part we generalize Makanin's result and show that the solvability of word equations with variables x1,...,xn remains decidable when we specify regular languages L1,...,Ln over the coefficient alphabet and ask for solutions where the i-th components belongs to Li.",
+	isbn="978-3-540-46737-3"
+}
+
+@article{koscielski_pacholski:1996,
+	author = {Ko{\'{s}}cielski, Antoni and Pacholski, Leszek},
+	title = {Complexity of Makanin's Algorithm},
+	year = {1996},
+	issue_date = {July 1996},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	volume = {43},
+	number = {4},
+	issn = {0004-5411},
+	url = {https://doi.org/10.1145/234533.234543},
+	doi = {10.1145/234533.234543},
+	abstract = {The exponent of periodicity is an important factor in estimates of complexity of word-unification algorithms. We prove that the exponent of periodicity of a minimal solution of a word equation is of order 21.07d, where d is the length of the equation. We also give a lower bound 20.29d so our upper bound is almost optimal and exponentially better than the original bound (6d)22d4+ 2. Consequently, our result implies an exponential improvement of known upper bounds on complexity of word-unification algorithms.},
+	journal = {J. ACM},
+	month = {jul},
+	pages = {670–684},
+	numpages = {15},
+	keywords = {semantic unification, word equations, semi-groups, periodicity, Diophantine equations}
+}
+
+@inproceedings{gutierrez:1998,
+	author={Gutierrez, C.},
+	booktitle={Proceedings 39th Annual Symposium on Foundations of Computer Science (Cat. No.98CB36280)}, 
+	title={Satisfiability of word equations with constants is in exponential space}, 
+	year={1998},
+	volume={},
+	number={},
+	pages={112-119},
+	doi={10.1109/SFCS.1998.743434}
+}
+
+@inproceedings{plandowski:1999,
+	title={Satisfiability of word equations with constants is in NEXPTIME},
+	author={Plandowski, Wojciech},
+	booktitle={Proceedings of the thirty-first annual ACM symposium on Theory of Computing},
+	pages={721--725},
+	year={1999}
+}
+
+@article{plandowski:2004,
+	author = {Plandowski, Wojciech},
+	title = {Satisfiability of Word Equations with Constants is in PSPACE},
+	year = {2004},
+	issue_date = {May 2004},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	volume = {51},
+	number = {3},
+	issn = {0004-5411},
+	url = {https://doi.org/10.1145/990308.990312},
+	doi = {10.1145/990308.990312},
+	abstract = {We prove that satisfiability problem for word equations is in PSPACE.},
+	journal = {J. ACM},
+	month = {may},
+	pages = {483–496},
+	numpages = {14},
+	keywords = {String unification, word equations}
 }

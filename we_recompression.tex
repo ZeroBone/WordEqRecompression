@@ -96,7 +96,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \end{problem}
 
 \begin{example}[Satisfiable equation]
-	The equation $ b\var{x}ba\var{y}b = \var{y}bb\var{x}ab $ is satisfiable via $ \varphi(\var{x}) := \sol{ab} $, $ \varphi(\var{y}) := \sol{ba} $: \begin{center}
+	The equation $ b\var{x}ba\var{y}b = \var{y}bb\var{x}ab $ is \alertGreen{satisfiable} via $ \varphi(\var{x}) := \sol{ab} $, $ \varphi(\var{y}) := \sol{ba} $: \begin{center}
 		\begin{tabular}{c c c c c c c c c c}
 			$ b $ & $ \var{x} $ & $ ba $ & $ \var{y} $ & $ b $ & $ = $ & $ \var{y} $ & $ bb $ & $ \var{x} $ & $ ab $ \\
 			$ b $ & $ \sol{ab} $ & $ ba $ & $ \sol{ba} $ & $ b $ & $ = $ & $ \sol{ba} $ & $ bb $ & $ \sol{ab} $ & $ ab $
@@ -105,7 +105,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \end{example}
 
 \begin{example}[Unsatisfiable equations]
-	The equations $ a\var{x} = b\var{y} $, $ a\var{x}\var{y} = \var{y}a\var{x}a $ and $ \var{x}a = ab\var{x} $ are unsatisfiable.
+	The equations $ a\var{x} = b\var{y} $, $ a\var{x}\var{y} = \var{y}a\var{x}a $ and $ \var{x}a = ab\var{x} $ are \alert{unsatisfiable}.
 \end{example}
 
 \end{frame}
@@ -123,6 +123,8 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	\item[2016] $ \PSPACE $ algorithm via the \textit{recompression technique} \cite{jez:2016};
 	\item[2022] $ \NSPACE(n) $ algorithm via \textit{recompression} and Huffman coding \cite{jez:2022};
 \end{itemize}
+
+\pause
 
 \textbf{Best known lower bound}: $ \NP $-hard
 
@@ -276,7 +278,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	\overunderbraces{&\br{3}{\var{x}}}
 	{&a\ b&\ &\alertBlue{a}&\ &\alertBlue{b}\ \alertGreen{a}&\ &\alertGreen{b}}%
 	{&&&\br{3}{\var{x}}}
-	\]\stepdown{Set $ \var{x} := \var{x}a $ (``right-popping'')}\[
+	\]\stepdown{Set $ \var{x} := \var{x}a $}\[
 	\overunderbraces{&\br{1}{\var{x}}}
 	{&a\ b&\ &\alertBlue{a\ b}&\ &\alertGreen{a\ b}}%
 	{&&&\br{1}{\var{x}}}
@@ -328,6 +330,33 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 			}
 		}
 	\end{algorithm}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Block compression}
+	
+	\begin{itemize}
+		\item We have discussed how to compress $ ab \in \Gamma^2 $ for $ a \neq b $.
+		\item But what about blocks $ a^k $ for $ k \ge 1 $?
+		\item We show that $ a^k $ can be compressed using an analogous approach.
+	\end{itemize}
+
+	\vspace{2em}
+	
+	\begin{center}
+		\begin{tabular}{r|l}
+			\textbf{Step 1} & \begin{tabular}{@{}l@{}}
+				For all occurrences of $ a^k $ in $ \varphi(U) $ for $ k $ maximal,\\
+				ensure that $ a^k $ is not crossing.
+			\end{tabular}\\\hline
+			\textbf{Step 2} & Replace every occurrence of $ a^k $ by a fresh letter $ a_k $.
+		\end{tabular}
+	\end{center}
+\end{frame}
+
+\begin{frame}
+	\frametitle{t}
+	content
 \end{frame}
 
 \begin{frame}[allowframebreaks]

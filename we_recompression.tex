@@ -77,6 +77,7 @@
 }
 
 \newcommand{\unknowneqpart}[1]{\sol{\boxed{\mbox{#1}}}}
+\newcommand{\redeqbox}[1]{\freshVar{\boxed{\mbox{#1}}}}
 
 \newenvironment<>{openproblem}[1][]{%
 	\setbeamercolor{block title}{fg=white,bg=magentazb}%
@@ -355,8 +356,65 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \end{frame}
 
 \begin{frame}
-	\frametitle{t}
-	content
+	\frametitle{Block compression: intuition}
+	
+	\only<1-5|handout:1-5>{\[
+		\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
+		{&\sol{c\ a}&\ &\sol{b\ c\ b\ a}&\ &a&\ &a\ a&\ &\sol{c\ a}&\ &\sol{b\ c\ b\ a}&\ a}%
+		{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
+	\]}\only<1-5|handout:1-5>{\stepdown{Set $ \var{x} := \sol{c}\var{x}\sol{a} $}}\only<2|handout:2>{\[
+		\overunderbraces{&&&&&\br{5}{\var{y}}&&&&&&\br{3}{\var{x}}}
+		{&\sol{c}&\ &\sol{a}&\ &\sol{b}\ \sol{c}\ \sol{b}&\ &\sol{a}&\ &a&\ &a\ a&\ &\sol{c}&\ &\sol{a}&\ &\sol{b\ c\ b}&\ &\sol{a}&\ &a}%
+		{&&&\br{3}{\var{x}}&&&&&&&&&&&&\br{5}{\var{y}}}
+		\]
+	}\only<3-|handout:3->{\[
+		\overunderbraces{&&&&&\br{5}{\var{y}}&&&&&&\br{3}{\var{x}}}
+		{&c&\ &a&\ &\sol{b}\ \sol{c}\ \sol{b}&\ &\sol{a}&\ &\sol{a}&\ &a\ a&\ &c&\ &a&\ &\sol{b\ c\ b}&\ &\sol{a}&\ &\sol{a}}%
+		{&&&\br{3}{\var{x}}&&&&&&&&&&&&\br{5}{\var{y}}}
+		\]
+	}\only<4-|handout:4->{\stepdown{Set $ \var{y} := \sol{b}\var{y}\sol{aa} $}}\only<4|handout:4>{\[
+		\overunderbraces{&&&&&&&\br{1}{\var{y}}&&&&&&&&&&\br{5}{\var{x}}}
+		{&c&\ &a&\ &\sol{b}&\ &\sol{c}\ \sol{b}&\ &\sol{a}&\ &\sol{a}&\ &a\ a&\ &c&\ &a&\ &\sol{b}&\ &\sol{c\ b}&\ &\sol{a}&\ &\sol{a}}%
+		{&&&\br{5}{\var{x}}&&&&&&&&&&&&&&\br{1}{\var{y}}}
+	\]}\only<5-|handout:5->{\[
+	\overunderbraces{&&&&&&&\br{1}{\var{y}}&&&&&&\br{5}{\var{x}}}
+	{&c&\ &a&\ &b&\ &c\ b&\ &\redeqbox{a\ a\ a\ a}&\ &c&\ &a&\ &b&\ &c\ b&\ &a&\ &a}%
+	{&&&\br{5}{\var{x}}&&\br{1}{\substack{\text{Block is no}\\\text{longer crossing}}}&&&&&&&&\br{1}{\var{y}}}
+	\]}\only<6-|handout:6->{\stepdown{Compress $ \redeqbox{a\ a\ a\ a} \rightsquigarrow \freshVar{a_4} $}}\only<6-|handout:6->{\[
+	\overunderbraces{&&&&&&&\br{1}{\var{y}}&&&&&&\br{5}{\var{x}}}
+	{&c&\ &a&\ &b&\ &c\ b&\ &\freshVar{a_4}&\ &c&\ &a&\ &b&\ &c\ b&\ &a&\ &a}%
+	{&&&\br{5}{\var{x}}&&&&&&&&&&\br{1}{\var{y}}}
+	\]}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Block compression: intuition (continued)}
+	
+	\only<1>{\[
+		\overunderbraces{&&&&&&&\br{1}{\var{y}}&&&&&&\br{5}{\var{x}}}
+		{&c&\ &a&\ &b&\ &c\ b&\ &\freshVar{a_4}&\ &c&\ &a&\ &b&\ &c\ b&\ &a&\ &a}%
+		{&&&\br{5}{\var{x}}&&&&&&&&&&\br{1}{\var{y}}}
+		\]
+	}\only<2->{\[
+		\overunderbraces{&&&&&&&\br{1}{\var{y}}&&&&&&\br{5}{\var{x}}}
+		{&c&\ &a&\ &b&\ &c\ b&\ &\freshVar{a_4}&\ &c&\ &a&\ &b&\ &c\ b&\ &\redeqbox{a\ a}}%
+		{&&&\br{5}{\var{x}}&&&&&&&&&&\br{1}{\var{y}}}
+		\]
+	}\only<3->{\stepdown{Compress $ \redeqbox{a\ a} \rightsquigarrow \freshVar{a_2} $}}\only<3->{\[
+		\overunderbraces{&&&&&&&\br{1}{\var{y}}&&&&&&\br{5}{\var{x}}}
+		{&c&\ &a&\ &b&\ &c\ b&\ &\freshVar{a_4}&\ &c&\ &a&\ &b&\ &c\ b&\ &\freshVar{a_2}}%
+		{&&&\br{5}{\var{x}}&&&&&&&&&&\br{1}{\var{y}}}
+		\]
+	}
+	\only<3->{\begin{center}
+		This concludes the compression of all $ a $-blocks.
+	\end{center}}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Block compression}
+	
+	TODO
 \end{frame}
 
 \begin{frame}[allowframebreaks]

@@ -1,5 +1,5 @@
-\documentclass[handout]{beamer}
-% \documentclass{beamer}
+% \documentclass[handout]{beamer}
+\documentclass{beamer}
 \usepackage{lmodern}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -65,6 +65,16 @@
 \newcommand{\freshVar}[1]{\textcolor{red}{#1}}
 \newcommand{\anotherFreshVar}[1]{\textcolor{OliveGreen}{#1}}
 
+\newcommand{\stepdown}[1]{
+	\begin{center}
+		\begin{tabular}{c c}
+			$ \Downarrow $ & #1
+		\end{tabular}
+	\end{center}
+}
+
+\newcommand{\unknowneqpart}[1]{\sol{\boxed{\mbox{#1}}}}
+
 \newenvironment<>{openproblem}[1][]{%
 	\setbeamercolor{block title}{fg=white,bg=magentazb}%
 	\begin{block}#1}{\end{block}}
@@ -101,20 +111,21 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \frametitle{History}
 
 \begin{itemize}
-	\item[1977] Word equations are decidable \cite{makanin:1977}; very high complexity;
+	\item[1977] Word equations are decidable \cite{makanin:1977};
 	\item[1990] Makanin's algorithm \cite{makanin:1977} improved to run in $ \FOURNEXP $ \cite{jaffar:1990, schulz:1990};
 	\item[1996] Further improvement to $ \THREENEXP $ \cite{koscielski_pacholski:1996};
 	\item[1998] Further improvement to $ \EXPSPACE $ \cite{gutierrez:1998};
 	\item[1999] $ \NEXP $ algorithm via a double-exponential upper bound on the size of the length-minimal solution \cite{plandowski:1999};
 	\item[2004] $ \PSPACE $ algorithm via a rewriting system \cite{plandowski:2004}. Soundness trivial, complicated proof of completeness;
 	\item[2016] $ \PSPACE $ algorithm via the \textit{recompression technique} \cite{jez:2016};
+	\item[2022] $ \NSPACE(n) $ algorithm via \textit{recompression} and Huffman coding \cite{jez:2022};
 \end{itemize}
+
+\textbf{Best known lower bound}: $ \NP $-hard
 
 \begin{openproblem}{Long-standing open problem}
 	Are word equations in $ \NP $?
 \end{openproblem}
-
-% $ \rightsquigarrow $
 
 \end{frame}
 
@@ -136,21 +147,56 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	
 \end{frame}
 
-\newcommand{\stepdown}[1]{
-	\begin{center}
-		\begin{tabular}{c c}
-			$ \Downarrow $ & #1
-		\end{tabular}
-	\end{center}
-}
-
 \begin{frame}
 	\frametitle{Intuition: pair compression}
 	
-	\[
+	\begin{columns}
+		\column{0.5\textwidth}\textbf{Given equation}\[
+		\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
+		{&c\ a&\ &\unknowneqpart{?\ ?\ ?\ ?}&\ &a&\ &a\ a&\ &c\ a&\ &\unknowneqpart{?\ ?\ ?\ ?}&\ a}%
+		{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
+		\]
+		\column{0.5\textwidth}\textbf{Solved equation}\[
 		\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
 		{&c\ a&\ &\sol{b\ c\ b\ a}&\ &a&\ &a\ a&\ &c\ a&\ &\sol{b\ c\ b\ a}&\ a}%
 		{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
+		\]
+	\end{columns}
+	\pause
+	\stepdown{Compress $ \sol{ba} \rightsquigarrow \freshVar{d} $}
+	\begin{columns}
+		\column{0.5\textwidth}\[
+		\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
+		{&c\ a&\ &\unknowneqpart{?\ ?\ ?}&\ &a&\ &a\ a&\ &c\ a&\ &\unknowneqpart{?\ ?\ ?}&\ a}%
+		{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
+		\]
+		\column{0.5\textwidth}\[
+		\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
+		{&c\ a&\ &\sol{b\ c}\ \freshVar{d}&\ &a&\ &a\ a&\ &c\ a&\ &\sol{b\ c}\ \freshVar{d}&\ a}%
+		{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
+		\]
+	\end{columns}
+	\pause
+	\stepdown{Compress $ ca \rightsquigarrow \anotherFreshVar{e} $}
+	\begin{columns}
+		\column{0.5\textwidth}\[
+		\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
+		{&\anotherFreshVar{e}&\ &\unknowneqpart{?\ ?\ ?}&\ &a&\ &a\ a&\ &\anotherFreshVar{e}&\ &\unknowneqpart{?\ ?\ ?}&\ a}%
+		{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
+		\]
+		\column{0.5\textwidth}\[
+		\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
+		{&\anotherFreshVar{e}&\ &\sol{b\ c}\ \freshVar{d}&\ &a&\ &a\ a&\ &\anotherFreshVar{e}&\ &\sol{b\ c}\ \freshVar{d}&\ a}%
+		{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
+		\]
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\[
+	\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
+	{&c\ a&\ &\sol{b\ c\ b\ a}&\ &a&\ &a\ a&\ &c\ a&\ &\sol{b\ c\ b\ a}&\ a}%
+	{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
 	\]
 	
 	\stepdown{Compress $ \sol{ba} \rightsquigarrow \freshVar{d} $}
@@ -168,9 +214,6 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	{&\anotherFreshVar{e}&\ &\sol{b\ c}\ \freshVar{d}&\ &a&\ &a\ a&\ &\anotherFreshVar{e}&\ &\sol{b\ c}\ \freshVar{d}&\ a}%
 	{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
 	\]
-	
-	\stepdown{$ \dots $}
-	
 \end{frame}
 
 \begin{frame}[allowframebreaks]

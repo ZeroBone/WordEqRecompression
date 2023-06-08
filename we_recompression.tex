@@ -61,9 +61,12 @@
 \definecolor{OliveGreen}{rgb}{0,0.6,0}
 \definecolor{LightCyan}{rgb}{0.88,1,1}
 \definecolor{magentazb}{RGB}{255,0,255}
+\definecolor{LightBlueZB}{RGB}{51,51,179} % #3333B3
 
 \newcommand{\freshVar}[1]{\textcolor{red}{#1}}
 \newcommand{\anotherFreshVar}[1]{\textcolor{OliveGreen}{#1}}
+\newcommand{\alertGreen}[1]{\textcolor{OliveGreen}{#1}}
+\newcommand{\alertBlue}[1]{\textcolor{LightBlueZB}{#1}}
 
 \newcommand{\stepdown}[1]{
 	\begin{center}
@@ -190,6 +193,35 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 		{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
 		\]
 	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Central idea}
+	
+	\textbf{Idea}: nondeterministically compress the given word equation $ U = V $ in a sound and complete way.
+	
+	\begin{center}
+		\begin{tikzpicture}[
+			grow=right,
+			edge from parent/.style = {draw, -latex},
+			sibling distance        = 2em,
+			level distance          = 10em,
+			]
+			\node {$ U = V $}
+			child {node {$ U_k = V_k $}}
+			child {node {$ \phantom{U_k}\vdots\phantom{V_k} $}}
+			child {node {$ U_3 = V_3 $}}
+			child {node {$ U_2 = V_2 $}}
+			child {node {$ U_1 = V_1 $}};
+		\end{tikzpicture}
+	\end{center}
+	
+	\begin{center}
+		\begin{tabular}{r l c l}
+			\alertBlue{Completeness}: & $ U = V $ \alertGreen{satisfiable} & $ \Rightarrow $ & $ \exists i : U_i = V_i $ \alertGreen{satisfiable} \\
+			\alertBlue{Soundness}: & $ U = V $ \alert{unsatisfiable} & $ \Rightarrow $ & $ \forall i : U_i = V_i $ \alert{unsatisfiable}
+		\end{tabular}
+	\end{center}
 \end{frame}
 
 \begin{frame}

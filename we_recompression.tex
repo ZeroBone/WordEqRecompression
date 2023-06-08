@@ -291,6 +291,45 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	\end{center}
 \end{frame}
 
+\begin{frame}
+	\frametitle{Pair compression algorithm}
+	
+	\begin{algorithm}[H]
+		\caption{Pair compression}
+		\SetAlgoLined
+		\SetKwFunction{compresspair}{compress\_pair}
+		\SetKwProg{compresspairproc}{Function}{}{end}
+		\KwIn{Letters $ a, b \in \Gamma $}
+		\compresspairproc{\compresspair{$ a $, $ b $}}{
+			\nl Replace every $ ab $ appearing in $ U $ or $ V $ by a fresh letter $ \freshVar{c} $\;
+		}
+	\end{algorithm}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Popping algorithm}
+	
+	\begin{algorithm}[H]
+		\caption{Popping and pair compression}
+		\SetAlgoLined
+		\SetKwFunction{pop}{pop}
+		\SetKwProg{popproc}{Function}{}{end}
+		\KwIn{Blocks $ \Gamma_l $ and $ \Gamma_r $ of a partition $ \Gamma = \Gamma_l \cup \Gamma_r $}
+		\popproc{\pop{$ \Gamma_l $, $ \Gamma_r $}}{
+			\nl \ForEach{$ \var{x} \in \X $}{
+				\nl Let $ b $ be the first letter of $ \varphi(\var{x}) $\;
+				\nl \If{$ b \in \Gamma_r $}{
+					\nl Replace $ \var{x} $ either by $ b\var{x} $ or by $ b $\;
+				}
+				\nl Let $ a $ be the last letter of $ \varphi(\var{x}) $\;
+				\nl \If{$ a \in \Gamma_l $}{
+					\nl Replace $ \var{x} $ either by $ \var{x}a $ or by $ a $\;
+				}
+			}
+		}
+	\end{algorithm}
+\end{frame}
+
 \begin{frame}[allowframebreaks]
 \frametitle{References}
 \bibliographystyle{amsalpha}

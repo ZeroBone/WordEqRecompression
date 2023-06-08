@@ -225,27 +225,70 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \end{frame}
 
 \begin{frame}
+	\frametitle{Naive pair compression is problematic}
+	
+	Clearly, replacing $ ab $ by a fresh letter $ \freshVar{c} $ is sound. However, this operation is not always complete. Consider \alertGreen{satisfiable} equation \[
+	\var{x}bab = ab\var{x}b
+	\] with solution \[
+	\overunderbraces{&\br{3}{\var{x}}}
+	{&a\ b&\ &a&\ &b\ a&\ &b}%
+	{&&&\br{3}{\var{x}}}
+	\]\begin{columns}
+		\column{0.5\textwidth}
+		\stepdown{Compress $ ab \rightsquigarrow \freshVar{c} $}\[
+		\var{x}b\freshVar{c} = \freshVar{c}\var{x}b
+		\]\fbox{
+			\parbox{0.9\textwidth}{
+				\begin{center}
+					\alert{Unsatisfiable}\\(because otherwise $ \varphi(\var{x})b \in c^* $)
+				\end{center}
+			}
+		}
+		\column{0.5\textwidth}
+		\stepdown{Compress $ ba \rightsquigarrow \freshVar{c} $}\[
+		\var{x}\freshVar{c}b = ab\var{x}b
+		\]\fbox{
+			\parbox{0.9\textwidth}{
+				\begin{center}
+					\alert{Unsatisfiable}\\(because $ |\var{x}\freshVar{c}b|_{\freshVar{c}} > |ab\var{x}b|_{\freshVar{c}} $)
+				\end{center}
+			}
+		}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Crossing occurrences make compression not complete}
+	
+	\textbf{Problem}: We cannot replace $ \alertGreen{ab} $ by $ \freshVar{c} $ in \[
+	\overunderbraces{&\br{3}{\var{x}}}
+	{&a\ b&\ &\alertBlue{a}&\ &\alertBlue{b}\ \alertGreen{a}&\ &\alertGreen{b}}%
+	{&&&\br{3}{\var{x}}}
+	\] because $ ab $ has two crossing occurrences \alertBlue{ab} and \alertGreen{ab}, i.e., occurrences coming neither from $ U $ or $ V $ nor from $ \varphi(\var{x}) $ for some $ \var{x} $.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Crossing occurrences make compression not complete}
+	
+	\textbf{Solution}: Before compressing a pair $ ab $, ensure that $ ab $ has no crossing occurrences by ``popping-in'' letters from variables:
+	
 	\[
-	\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
-	{&c\ a&\ &\sol{b\ c\ b\ a}&\ &a&\ &a\ a&\ &c\ a&\ &\sol{b\ c\ b\ a}&\ a}%
-	{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
+	\overunderbraces{&\br{3}{\var{x}}}
+	{&a\ b&\ &\alertBlue{a}&\ &\alertBlue{b}\ \alertGreen{a}&\ &\alertGreen{b}}%
+	{&&&\br{3}{\var{x}}}
+	\]\stepdown{Set $ \var{x} := \var{x}a $ (``right-popping'')}\[
+	\overunderbraces{&\br{1}{\var{x}}}
+	{&a\ b&\ &\alertBlue{a\ b}&\ &\alertGreen{a\ b}}%
+	{&&&\br{1}{\var{x}}}
+	\]\stepdown{Compress $ ab \rightsquigarrow \freshVar{c} $}\[
+	\overunderbraces{&\br{1}{\var{x}}}
+	{&\freshVar{c}&\ &\freshVar{c}&\ &\freshVar{c}}%
+	{&&&\br{1}{\var{x}}}
 	\]
 	
-	\stepdown{Compress $ \sol{ba} \rightsquigarrow \freshVar{d} $}
-	
-	\[
-	\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
-	{&c\ a&\ &\sol{b\ c}\ \freshVar{d}&\ &a&\ &a\ a&\ &c\ a&\ &\sol{b\ c}\ \freshVar{d}&\ a}%
-	{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
-	\]
-	
-	\stepdown{Compress $ ca \rightsquigarrow \anotherFreshVar{e} $}
-	
-	\[
-	\overunderbraces{&&&\br{3}{\var{y}}&&&&\br{3}{\var{x}}}
-	{&\anotherFreshVar{e}&\ &\sol{b\ c}\ \freshVar{d}&\ &a&\ &a\ a&\ &\anotherFreshVar{e}&\ &\sol{b\ c}\ \freshVar{d}&\ a}%
-	{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
-	\]
+	\begin{center}
+		$ ab $ has no crossing occurrences $ \Rightarrow $ \alertBlue{sound} and \alertBlue{complete} transformation
+	\end{center}
 \end{frame}
 
 \begin{frame}[allowframebreaks]

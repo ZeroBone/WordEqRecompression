@@ -298,7 +298,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	\frametitle{Pair compression algorithm}
 	
 	\begin{algorithm}[H]
-		\caption{Pair compression}
+		\caption{Pair compression \cite[Algorithm 1]{jez:2016}}
 		\SetAlgoLined
 		\SetKwFunction{compresspair}{compress\_pair}
 		\SetKwProg{compresspairproc}{Function}{}{end}
@@ -313,7 +313,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	\frametitle{Popping algorithm}
 	
 	\begin{algorithm}[H]
-		\caption{Popping and pair compression}
+		\caption{Popping algorithm \cite[Algorithm 3]{jez:2016}}
 		\SetAlgoLined
 		\SetKwFunction{pop}{pop}
 		\SetKwProg{popproc}{Function}{}{end}
@@ -412,7 +412,28 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \end{frame}
 
 \begin{frame}
-	\frametitle{Block compression}
+	\frametitle{Block compression for non-crossing blocks}
+	
+	Once all $ a $-blocks of length at least two are non-crossing, we simply replace them by fresh variables:
+	
+	\vspace{1em}
+	
+	\begin{algorithm}[H]
+		\caption{Block compression \cite[Algorithm 2]{jez:2016}}
+		\SetAlgoLined
+		\SetKwFunction{compressblock}{compress\_block}
+		\SetKwProg{compressblockproc}{Function}{}{end}
+		\KwIn{Letter $ a \in \Gamma $}
+		\compressblockproc{\compressblock{$ a $}}{
+			\nl \ForEach{occurrence of $ a^l $ for some $ l \ge 2 $ in $ U $ or $ V $}{
+				\nl Replace this occurrence by $ a_l $, where $ a_l $ is a letter uniquely determined by $ a $ and $ l $\;
+			}
+		}
+	\end{algorithm}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Making blocks non-crossing}
 	
 	TODO
 \end{frame}

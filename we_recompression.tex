@@ -435,7 +435,50 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \begin{frame}
 	\frametitle{Making blocks non-crossing}
 	
-	TODO
+	We ensure that the compressed $ a $-blocks are non-crossing as follows:
+	
+	\vspace{1em}
+	
+	\begin{algorithm}[H]
+		\caption{Cutting prefixes and suffixes \cite[Algorithm 5]{jez:2016}}
+		\SetAlgoLined
+		\SetKwFunction{cutprefsuff}{cut\_pref\_suff}
+		\SetKwProg{cutprefsuffproc}{Function}{}{end}
+		\cutprefsuffproc{\cutprefsuff{}}{
+			\nl \ForEach{$ \var{x} \in \X $}{
+				\nl Guess $ l \ge 1 $, $ r \ge 0 $, $ a, b \in \Gamma $ such that $ \varphi(\var{x}) = a^lwb^r $ holds for some $ w \in \Gamma^* $ where $ w $ neither starts with $ a $ nor ends with $ b $\;
+				\nl Replace $ \var{x} $ either by $ a^l\var{x}b^r $ or by $ a^lb^r $\;
+			}
+		}
+	\end{algorithm}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Algorithm for word equations}
+	
+	\begin{algorithm}[H]
+		\caption{Satisfiability of word equations \cite[Algorithm 7]{jez:2016}}
+		\SetAlgoLined
+		\SetKwFunction{wesat}{we\_sat}
+		\SetKwProg{wesatproc}{Function}{}{end}
+		\wesatproc{\wesat{}}{
+			\nl \While{$ \left|U\right| \ge 2 \vee \left|V\right| \ge 2 $}{
+				% \tcp{Block compression}
+				\nl \cutprefsuff{}\tcp*[r]{Make sure $ a^l $ is non-crossing}
+				\nl \ForEach{$ a \in \Gamma $}{
+					\nl \compressblock{$ a $}\tcp*[r]{Compress every $ a $-block}
+				}
+				% \tcp{Two rounds of pair compression}
+				\nl \ForEach{$ i \in \{1, 2\} $}{
+					\nl Guess partition of $ \Gamma $ into $ \Gamma_l $ and $ \Gamma_r $\;
+					\nl \pop{$ \Gamma_l $, $ \Gamma_r $}\tcp*[r]{Make sure $ ab \in \Gamma_l\Gamma_r $ is non-crossing}
+					\nl \ForEach{$ ab \in \Gamma_l\Gamma_r $}{
+						\nl \compresspair{$ a $, $ b $} \;
+					}
+				}
+			}
+		}
+	\end{algorithm}
 \end{frame}
 
 \begin{frame}[allowframebreaks]

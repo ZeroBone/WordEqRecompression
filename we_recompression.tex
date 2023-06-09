@@ -481,6 +481,46 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	\end{algorithm}
 \end{frame}
 
+\begin{frame}
+	\frametitle{Running example continued}
+	
+	We perform pair compression with $ \Gamma_l := \{a, \freshVar{a_2}, \freshVar{a_4}\} $ and $ \Gamma_r := \{b, c\} $:
+	
+	% After block compression, we obtained:
+	
+	\only<1-3|handout:1-3>{\[
+		\overunderbraces{&&&&&&&\br{1}{\var{y}}&&&&&&\br{5}{\var{x}}}
+		{&c&\ &a&\ &b&\ &c\ b&\ &\freshVar{a_4}&\ &c&\ &a&\ &b&\ &c\ b&\ &\freshVar{a_2}}
+		{&&&\br{5}{\var{x}}&&&&&&&&&&\br{1}{\var{y}}}
+	\]}\only<2-3|handout:2-3>{
+	\stepdown{Set $ \var{y} := c\var{y} $ (because $ \varphi(\var{y}) $ starts with $ c \in \Gamma_r $)}
+	}\only<2-|handout:2->{
+		\[
+		\overunderbraces{&&&&&&&\br{1}{\var{y}}&&&&&&\br{5}{\var{x}}}
+		{&c&\ &a&\ &b\ c&\ &b&\ &\freshVar{a_4}&\ &c&\ &a&\ &b\ c&\ &b&\ &\freshVar{a_2}}
+		{&&&\br{5}{\var{x}}&&&&&&&&&&\br{1}{\var{y}}}
+		\]
+	}\only<3-|handout:3->{
+		\stepdown{Compress $ ab \rightsquigarrow \anotherFreshVar{d} $ ($ ab $ is guaranteed to be non-crossing)}\[
+		\overunderbraces{&&&&&&&\br{1}{\var{y}}&&&&&&\br{5}{\var{x}}}
+		{&c&\ &\anotherFreshVar{d}&\ &c&\ &b&\ &\freshVar{a_4}&\ &c&\ &\anotherFreshVar{d}&\ &c&\ &b&\ &\freshVar{a_2}}
+		{&&&\br{5}{\var{x}}&&&&&&&&&&\br{1}{\var{y}}}
+		\]
+	}\only<4-|handout:4->{
+		\stepdown{Compress $ \freshVar{a_4}c \rightsquigarrow \alertBlue{e} $ ($ ab $ is guaranteed to be non-crossing)}\[
+		\overunderbraces{&&&&&&&\br{1}{\var{y}}&&&&\br{5}{\var{x}}}
+		{&c&\ &\anotherFreshVar{d}&\ &c&\ &b&\ &\alertBlue{e}&\ &\anotherFreshVar{d}&\ &c&\ &b&\ &\freshVar{a_2}}
+		{&&&\br{5}{\var{x}}&&&&&&&&\br{1}{\var{y}}}
+		\]\begin{center}
+			\fbox{
+				\parbox{0.75\textwidth}{
+					No more occurrences of $ ab \in \Gamma_l \Gamma_r $ in $ U $ or $ V $.
+				}
+			}
+		\end{center}
+	}
+\end{frame}
+
 \begin{frame}[allowframebreaks]
 \frametitle{References}
 \bibliographystyle{amsalpha}

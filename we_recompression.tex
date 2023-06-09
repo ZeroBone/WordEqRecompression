@@ -42,19 +42,6 @@
 
 \def\X{\mathcal{X}}
 
-\newlang{\EUF}{EUF}
-
-\DeclareMathOperator{\Disjuncts}{DNF}
-\DeclareMathOperator{\DisjunctsOf}{DisjOf}
-
-\def\DisjPhi{\Disjuncts(\varphi)}
-\def\DisjPhiPrime{\Disjuncts(\varphi')}
-\def\DisjNegPhi{\Disjuncts(\neg\varphi)}
-\def\DisjTrue{\Disjuncts(\top)}
-
-\DeclareMathOperator{\CDCL}{CDCL}
-\def\CDCLT{\CDCL(\mathrm{T})}
-
 \newcommand{\var}[1]{\textcolor{blue}{#1}}
 \newcommand{\sol}[1]{\textcolor{orange}{#1}}
 
@@ -447,6 +434,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 		\cutprefsuffproc{\cutprefsuff{}}{
 			\nl \ForEach{$ \var{x} \in \X $}{
 				\nl Guess $ l \ge 1 $, $ r \ge 0 $, $ a, b \in \Gamma $ such that $ \varphi(\var{x}) = a^lwb^r $ holds for some $ w \in \Gamma^* $ where $ w $ neither starts with $ a $ nor ends with $ b $\;
+				\tcp{Use binary encoding to store $ a^l $ and $ b^r $}
 				\nl Replace $ \var{x} $ either by $ a^l\var{x}b^r $ or by $ a^lb^r $\;
 			}
 		}
@@ -519,6 +507,25 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 			}
 		\end{center}
 	}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Analysis of the algorithm for word equations}
+	
+	Preliminary observation:
+	
+	\begin{itemize}
+		\item The algorithm never changes the number of variable occurrences in the equation;
+		\item Let that number be $ n_v $;
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Space consumption}
+	
+	\begin{itemize}
+		\item How many letters get popped into the equation as a result of block compression
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]

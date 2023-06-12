@@ -10,6 +10,7 @@
 \usepackage{oubraces}
 
 \usepackage{tikz}
+\usetikzlibrary{calc}
 
 \usepackage[sanserif]{complexity}
 
@@ -42,6 +43,9 @@
 
 \def\X{\mathcal{X}}
 
+% expected value
+\def\ExpVal{\E}
+
 \newcommand{\var}[1]{\textcolor{blue}{#1}}
 \newcommand{\sol}[1]{\textcolor{orange}{#1}}
 
@@ -70,9 +74,19 @@
 	\setbeamercolor{block title}{fg=white,bg=magentazb}%
 	\begin{block}#1}{\end{block}}
 
+\AtBeginSection[]
+{
+	\begin{frame}
+		\frametitle{Table of Contents}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+
 \begin{document}
 	
 \frame{\titlepage}
+
+\section{Word equations}
 
 \begin{frame}
 \frametitle{The problem}
@@ -102,14 +116,14 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \frametitle{History}
 
 \begin{itemize}
-	\item[1977] Word equations are decidable \cite{makanin:1977};
-	\item[1990] Makanin's algorithm \cite{makanin:1977} improved to run in $ \FOURNEXP $ \cite{jaffar:1990, schulz:1990};
-	\item[1996] Further improvement to $ \THREENEXP $ \cite{koscielski_pacholski:1996};
-	\item[1998] Further improvement to $ \EXPSPACE $ \cite{gutierrez:1998};
-	\item[1999] $ \NEXP $ algorithm via a double-exponential upper bound on the size of the length-minimal solution \cite{plandowski:1999};
-	\item[2004] $ \PSPACE $ algorithm via a rewriting system \cite{plandowski:2004}. Soundness trivial, complicated proof of completeness;
-	\item[2016] $ \PSPACE $ algorithm via the \textit{recompression technique} \cite{jez:2016};
-	\item[2022] $ \NSPACE(n) $ algorithm via \textit{recompression} and Huffman coding \cite{jez:2022};
+	\item[1977] Word equations are decidable \cite{makanin:1977}.
+	\item[1990] Makanin's algorithm \cite{makanin:1977} improved to run in $ \FOURNEXP $ \cite{jaffar:1990, schulz:1990}.
+	\item[1996] Further improvement to $ \THREENEXP $ \cite{koscielski_pacholski:1996}.
+	\item[1998] Further improvement to $ \EXPSPACE $ \cite{gutierrez:1998}.
+	\item[1999] $ \NEXP $ algorithm via a double-exponential upper bound on the size of the length-minimal solution \cite{plandowski:1999}.
+	\item[2004] $ \PSPACE $ algorithm via a rewriting system \cite{plandowski:2004}. Soundness trivial, complicated proof of completeness.
+	\item[2016] $ \PSPACE $ algorithm via the \textit{recompression technique} \cite{jez:2016}.
+	\item[2022] $ \NSPACE(n) $ algorithm via \textit{recompression} and Huffman coding \cite{jez:2022}.
 \end{itemize}
 
 \pause
@@ -126,7 +140,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	\frametitle{Notation}
 	
 	\begin{itemize}
-		\item Consider the word equation $ ca\var{y}aa\var{x}a = \var{x}aaaca\var{y} $
+		\item Consider the word equation $ ca\var{y}aa\var{x}a = \var{x}aaaca\var{y} $.
 		\item We visualize the solution \[
 			\varphi(\var{x}) := \sol{cabcba}
 			\quad\quad \varphi(\var{y}) := \sol{bcbaa}
@@ -135,10 +149,12 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 		{&c\ a&\ &\sol{b\ c\ b\ a}&\ &a&\ &a\ a&\ &c\ a&\ &\sol{b\ c\ b\ a}&\ a}%
 		{&\br{3}{\var{x}}&&&&&&&&\br{2}{\var{y}}}
 		\]
-		\item Over-braces encode the variables appearing on the left-hand side $ ca\var{y}aa\var{x}a $ of the equation, while the under-braces indicate the variables occuring on the right-hand side $ \var{x}aaaca\var{y} $
+		\item Over-braces encode the variables appearing on the left-hand side $ ca\var{y}aa\var{x}a $ of the equation, while the under-braces indicate the variables occuring on the right-hand side $ \var{x}aaaca\var{y} $.
 	\end{itemize}
 	
 \end{frame}
+
+\section{Solving word equations via recompression}
 
 \begin{frame}
 	\frametitle{Intuition: pair compression}
@@ -502,30 +518,243 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 		\]\begin{center}
 			\fbox{
 				\parbox{0.75\textwidth}{
-					No more occurrences of $ ab \in \Gamma_l \Gamma_r $ in $ U $ or $ V $.
+					There are no more occurrences of $ ab \in \Gamma_l \Gamma_r $ in $ U $ or $ V $.
 				}
 			}
 		\end{center}
 	}
 \end{frame}
 
+\section{Analysis of the recompression algorithm}
+
 \begin{frame}
-	\frametitle{Analysis of the algorithm for word equations}
+	\frametitle{Analysis of the algorithm -- overview}
 	
-	Preliminary observation:
+	We analyze one iteration of the main loop (``one phase'') where $ U_1 = V_1 $ gets rewritten to $ U_4 = V_4 $.
+	
+	\begin{center}
+		\begin{tikzpicture}
+			% config
+			
+			\coordinate (blockwidth) at (2, 0);
+			\coordinate (blockheight) at (0, 1.5);
+			\coordinate (blockspacing) at (1, 0);
+			\coordinate (stagearrlen) at (0, 1);
+			
+			% first block
+			
+			\coordinate (block1tl) at (0, 0);
+			\coordinate (block1bl) at ($ (block1tl) - (blockheight) $);
+			\coordinate (block1tr) at ($ (block1tl) + (blockwidth) $);
+			\coordinate (block1br) at ($ (block1tr) - (blockheight) $);
+			\coordinate (block1tc) at ($ (block1tl)!0.5!(block1tr) $);
+			\coordinate (block1bc) at ($ (block1bl)!0.5!(block1br) $);
+			\coordinate (block1rc) at ($ (block1tr)!0.5!(block1br) $);
+			
+			% second block
+
+			\coordinate (block2tl) at ($ (block1tr) + (blockspacing) $);
+			\coordinate (block2bl) at ($ (block2tl) - (blockheight) $);
+			\coordinate (block2tr) at ($ (block2tl) + (blockwidth) $);
+			\coordinate (block2br) at ($ (block2tr) - (blockheight) $);
+			\coordinate (block2tc) at ($ (block2tl)!0.5!(block2tr) $);
+			\coordinate (block2bc) at ($ (block2bl)!0.5!(block2br) $);
+			\coordinate (block2lc) at ($ (block2tl)!0.5!(block2bl) $);
+			\coordinate (block2rc) at ($ (block2tr)!0.5!(block2br) $);
+			
+			% third block
+			
+			\coordinate (block3tl) at ($ (block2tr) + (blockspacing) $);
+			\coordinate (block3bl) at ($ (block3tl) - (blockheight) $);
+			\coordinate (block3tr) at ($ (block3tl) + (blockwidth) $);
+			\coordinate (block3br) at ($ (block3tr) - (blockheight) $);
+			\coordinate (block3tc) at ($ (block3tl)!0.5!(block3tr) $);
+			\coordinate (block3bc) at ($ (block3bl)!0.5!(block3br) $);
+			\coordinate (block3lc) at ($ (block3tl)!0.5!(block3bl) $);
+			\coordinate (block3rc) at ($ (block3tr)!0.5!(block3br) $);
+			
+			% fourth block
+			
+			\coordinate (block4tl) at ($ (block3tr) + (blockspacing) $);
+			\coordinate (block4bl) at ($ (block4tl) - (blockheight) $);
+			\coordinate (block4tr) at ($ (block4tl) + (blockwidth) $);
+			\coordinate (block4br) at ($ (block4tr) - (blockheight) $);
+			\coordinate (block4tc) at ($ (block4tl)!0.5!(block4tr) $);
+			\coordinate (block4bc) at ($ (block4bl)!0.5!(block4br) $);
+			\coordinate (block4lc) at ($ (block4tl)!0.5!(block4bl) $);
+			
+			% stages
+			
+			\coordinate (stage12arrend) at ($ (block1rc)!0.5!(block2lc) $);
+			\coordinate (stage23arrend) at ($ (block2rc)!0.5!(block3lc) $);
+			\coordinate (stage34arrend) at ($ (block3rc)!0.5!(block4lc) $);
+			
+			\coordinate (stage12arrbegin) at ($ (stage12arrend) + (stagearrlen) $);
+			\coordinate (stage23arrbegin) at ($ (stage23arrend) + 1.5*(stagearrlen) $);
+			\coordinate (stage34arrbegin) at ($ (stage34arrend) + (stagearrlen) $);
+			
+			% content of first block
+			\draw ($ (block1tc)!0.33!(block1bc) $) node [rounded corners, draw=blue, fill=white] {$ U_1 = V_1 $};
+			\draw ($ (block1tc)!0.75!(block1bc) $) node {Size: $ n_1 $};
+			
+			% content of second block
+			\draw ($ (block2tc)!0.33!(block2bc) $) node [rounded corners, draw=blue, fill=white] {$ U_2 = V_2 $};
+			\draw ($ (block2tc)!0.75!(block2bc) $) node {Size: $ n_2 $};
+			
+			% content of third block
+			\draw ($ (block3tc)!0.33!(block3bc) $) node [rounded corners, draw=blue, fill=white] {$ U_3 = V_3 $};
+			\draw ($ (block3tc)!0.75!(block3bc) $) node {Size: $ n_3 $};
+			
+			% content of fourth block
+			\draw ($ (block4tc)!0.33!(block4bc) $) node [rounded corners, draw=blue, fill=white] {$ U_4 = V_4 $};
+			\draw ($ (block4tc)!0.75!(block4bc) $) node {Size: $ n_4 $};
+			
+			% arrows between blocks
+			\draw[->, thick] (block1rc) -- (block2lc);
+			\draw[->, thick] (block2rc) -- (block3lc);
+			\draw[->, thick] (block3rc) -- (block4lc);
+			
+			% stage arrows
+			\draw[->, thick] (stage12arrbegin) -- (stage12arrend);
+			\draw[->, thick] (stage23arrbegin) -- (stage23arrend);
+			\draw[->, thick] (stage34arrbegin) -- (stage34arrend);
+			
+			% stage titles
+			\node[anchor=south] at (stage12arrbegin) {Block compression};
+			\node[anchor=south] at (stage23arrbegin) {Pair compression};
+			\node[anchor=south] at (stage34arrbegin) {Pair compression};
+			
+			% draw block boxes
+			\draw[thick] (block1tl) -- (block1tr) -- (block1br) -- (block1bl) -- cycle;
+			\draw[thick] (block2tl) -- (block2tr) -- (block2br) -- (block2bl) -- cycle;
+			\draw[thick] (block3tl) -- (block3tr) -- (block3br) -- (block3bl) -- cycle;
+			\draw[thick] (block4tl) -- (block4tr) -- (block4br) -- (block4bl) -- cycle;
+		\end{tikzpicture}
+	\end{center}
+
+	\begin{columns}
+		\column{0.45\textwidth}
+		\textbf{Block compression}:
+		
+		{
+		\setlength{\interspacetitleruled}{0pt}
+		\setlength{\algotitleheightrule}{0pt}
+		\begin{algorithm}[H]
+			\nl \cutprefsuff{}\;
+			\nl \ForEach{$ a \in \Gamma $}{
+				\nl \compressblock{$ a $}\;
+			}
+		\end{algorithm}
+		}
+		\column{0.45\textwidth}
+		\textbf{Pair compression}:
+		
+		{
+		\setlength{\interspacetitleruled}{0pt}
+		\setlength{\algotitleheightrule}{0pt}
+		\begin{algorithm}[H]
+			\nl Guess partition of $ \Gamma $ into $ \Gamma_l $ and $ \Gamma_r $\;
+			\nl \pop{$ \Gamma_l $, $ \Gamma_r $}\;
+			\nl \ForEach{$ ab \in \Gamma_l\Gamma_r $}{
+				\nl \compresspair{$ a $, $ b $}\;
+			}
+		\end{algorithm}
+		}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Preliminary observations}
+	
+	For the sake of convenience, we introduce the notion of a \textit{symbol}.
+	
+	\begin{center}
+		\begin{tikzpicture}[
+			grow=down,
+			edge from parent/.style = {draw, -latex},
+			sibling distance        = 13em,
+			level distance          = 4em,
+			]
+			\node {Symbol}
+			child {node {$ a \in \Gamma $}}
+			child {node {Block $ a^l $ popped from some variable $ \var{x} $}}
+			child {node {Variable $ \var{x} $}};
+		\end{tikzpicture}
+	\end{center}
+	
+	\pause
 	
 	\begin{itemize}
-		\item The algorithm never changes the number of variable occurrences in the equation;
-		\item Let that number be $ n_v $;
+		\item The algorithm never changes the number of variable occurrences in the equation.
+		\item Let that number be $ m $.
+		\item Pair compression introduces at most $ 2m $ symbols.
+		\item Block compression also introduces at most $ 2m $ symbols.
+	\end{itemize}
+	
+	$ \rightsquigarrow $ One phase introduces at most $ 6m $ symbols into the equation.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Compression of the solution $ \varphi(U) $}
+	
+	We analyze how many letters of the solution $ \varphi(U) $ are compressed after \textbf{Block compression} followed by (one iteration of) \textbf{Pair compression}.
+	
+	\begin{itemize}
+		\item Let $ N := \left|\varphi(U)\right| $ and divide $ \varphi(U) $ into three-letter segments \[
+			\varphi(U) = w_1 w_2 \dots w_{N/3}
+		\] (w.l.o.g. $ N $ is divisible by $ 3 $).
+		\item Consider $ w_i = abc $ and let all probabilities be over the space of partitions of $ \Gamma $.
+		\item Let $ C_i : \Omega \rightarrow \{0, 1\} $ be a variable indicating whether at least one letter in $ w_i $ is compressed.
+		\item If $ a \neq b $ and $ b \neq c $, then \[
+			\Pr[C_i = 1] = \Pr[ab \in \Gamma_l \Gamma_r \vee bc \in \Gamma_l \Gamma_r]
+		\]
+		\item We prove this in more detail. Suppose $ ab \in \Gamma_l \Gamma_r $. The case when $ ab $ is explicit or crossing is clear (\pop{$ \Gamma_l $, $ \Gamma_r $} makes $ ab $ explicit whereupon $ ab $ gets compressed).
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Space consumption}
+	\frametitle{Compression of the solution $ \varphi(U) $}
 	
 	\begin{itemize}
-		\item How many letters get popped into the equation as a result of block compression
+		\item Similarly, but for a different reason:
+		\item If $ ab $ is implicit, then \pop{$ \Gamma_l $, $ \Gamma_r $} also makes $ ab $ explicit whereupon $ ab $ will get compressed.
+		\item This is because if all occurrences of $ ab $ are implicit, the solution $ \varphi $ is not length-minimal as we can get a shorter solution by defining $ \varphi' $ with $ \varphi'(\var{x}) $ set to $ \varphi(\var{x}) $ with every $ ab $ replaced by $ \varepsilon $ (see \cite[Lemma 2.4]{jez:2016} and \cite[Lemma 6]{plandowsky_rytter:1998}).
+		\item This is a contradiction because it can be assumed that we are compressing a length-minimal solution.
+		\item Hence, \begin{align*}
+			\Pr[C_i = 1] &= \Pr[ab \in \Gamma_l \Gamma_r \vee bc \in \Gamma_l \Gamma_r] \\
+			&= \Pr[ab \in \Gamma_l \Gamma_r] + \Pr[bc \in \Gamma_l \Gamma_r] \\
+			&= 1/4 + 1/4 = 1/2
+		\end{align*}
 	\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Compression of the solution $ \varphi(U) $}
+
+	\begin{itemize}
+		\item Now suppose $ a = b $ or $ b = c $.
+		\item Then $ abc $ intersects with some maximal block $ d^k $ in $ \varphi(U) $, for $ d \in \{a, b, c\} $ and $ k \ge 2 $.
+		\item \textbf{Case 1}: The $ d^k $ occurrence is not implicit $ \Rightarrow $ \cutprefsuff{} makes $ d^k $ explicit $ \Rightarrow $ The $ d^k $ occurrence gets compressed.
+		\item \textbf{Case 2}: Suppose the $ d^k $ occurrence is implicit.
+		\item Then either some other occurrence of $ d^k $ causes $ d^k $ to get compressed, or all maximal $ d^k $ blocks are implicit.
+		\item The latter implies that $ \varphi $ is not length-minimal because all occurrences of maximal $ d^k $ blocks can be deleted from the solution. This is a contradiction.
+		\item Hence,
+	\end{itemize}
+
+	\begin{center}
+		\fbox{
+			\parbox{0.5\textwidth}{\begin{center}$ \Pr[C_i = 1] \ge 1/2 $\end{center}}
+		}
+	\end{center}\end{frame}
+
+\begin{frame}
+	\begin{lemma}[Restated, cf. \cite{jez:2016, plandowsky_rytter:1998}]
+		Let $ \varphi $ be a length-minimal solution to $ U = V $. If $ a^k \neq \varepsilon $ is a maximal block in $ \varphi(U) $, then there exists an \textit{explicit} or \textit{crossing} occurrence of a maximal block $ a^k $ in $ \varphi(U) $, i.e., an occurrence where at least one $ a $ of $ a^k $ corresponds to an $ a $ appearing in either $ U $ or $ V $.
+	\end{lemma}
+	\begin{proof}
+		Suppose all occurrences of the maximal block $ a^k $ were \textit{implicit}, i.e., were substrings of $ \varphi(\var{x}) $ for some $ \var{x} \in \X $. For each such occurrence, there w.l.o.g. exist $ b, c \in \Gamma $ such that $ ba^kc $ is a substring of $ \varphi(U) $ for some $ b \neq a \neq c $; replace every such occurrence 
+	\end{proof}
 \end{frame}
 
 \begin{frame}[allowframebreaks]

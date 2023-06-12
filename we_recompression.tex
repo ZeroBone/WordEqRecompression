@@ -274,8 +274,14 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	{&&&\br{3}{\var{x}}}
 	\] because $ ab $ has two crossing occurrences \alertBlue{ab} and \alertGreen{ab}, i.e., occurrences coming neither from $ U $ or $ V $ nor from $ \varphi(\var{x}) $ for some $ \var{x} $.
 	
-	\begin{definition}[Pair types]
-		a
+	\begin{definition}[Pair types \cite{jez:2016, jez:2014, jez:2015}]
+		The occurrence of a substring $ u \in \Gamma^+ $ in a solution $ \varphi(U) $ to $ U = V $ is called \begin{center}
+			\begin{tabular}{r l}
+				\alertGreen{explicit} & if it comes from a substring $ u $ of $ U $ or $ V $ \\
+				\alertBlue{implicit} & if it comes $ \varphi(\var{x}) $ for some $ \var{x} \in \X $ \\
+				\alert{crossing} & otherwise
+			\end{tabular}
+		\end{center}
 	\end{definition}
 \end{frame}
 
@@ -664,7 +670,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 
 	Consequently:
 	\begin{theorem}
-		The recompression algorithm runs in time exponential in the size of the word equation.
+		The recompression algorithm runs in time exponential in the size of the given word equation.
 	\end{theorem}
 \end{frame}
 
@@ -841,6 +847,8 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	
 	$ \rightsquigarrow $ The space complexity of the recompression algorithm is $ O(n^2) $ (bits).
 \end{frame}
+
+\section{Conclusion}
 
 \begin{frame}
 	\frametitle{Conclusion}

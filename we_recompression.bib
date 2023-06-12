@@ -1,3 +1,39 @@
+@article{jez:2014,
+	author={Je{\.z}, Artur},
+	title={The Complexity of Compressed Membership Problems for Finite Automata},
+	journal={Theory of Computing Systems},
+	year={2014},
+	month={Nov},
+	day={01},
+	volume={55},
+	number={4},
+	pages={685-718},
+	abstract={In this paper, a compressed membership problem for finite automata, both deterministic (DFAs) and non-deterministic (NFAs), with compressed transition labels is studied. The compression is represented by straight-line programs (SLPs), i.e. context-free grammars generating exactly one string. A novel technique of dealing with SLPs is employed: the SLPs are recompressed, so that substrings of the input word are encoded in SLPs labelling the transitions of the NFA (DFA) in the same way, as in the SLP representing the input text. To this end, the SLPs are locally decompressed and then recompressed in a uniform way. Furthermore, in order to reflect the recompression in the NFA, we need to modify it only a little, in particular its size stays polynomial in the input size.},
+	issn={1433-0490},
+	doi={10.1007/s00224-013-9443-6},
+	url={https://doi.org/10.1007/s00224-013-9443-6}
+}
+
+@article{jez:2015,
+	author = {Je{\.z}, Artur},
+	title = {Faster Fully Compressed Pattern Matching by Recompression},
+	year = {2015},
+	issue_date = {January 2015},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	volume = {11},
+	number = {3},
+	issn = {1549-6325},
+	url = {https://doi.org/10.1145/2631920},
+	doi = {10.1145/2631920},
+	abstract = {In this article, a fully compressed pattern matching problem is studied. The compression is represented by straight-line programs (SLPs)—that is, context-free grammars generating exactly one string; the term fully means that both the pattern and the text are given in the compressed form. The problem is approached using a recently developed technique of local recompression: the SLPs are refactored so that substrings of the pattern and text are encoded in both SLPs in the same way. To this end, the SLPs are locally decompressed and then recompressed in a uniform way.This technique yields an O((n + m) log M) algorithm for compressed pattern matching, assuming that M fits in O(1) machine words, where n (m) is the size of the compressed representation of the text (pattern, respectively), and M is the size of the decompressed pattern. If only m + n fits in O(1) machine words, the running time increases to O((n + m) log M log (n + m)). The previous best algorithm due to Lifshits has O(n2m) running time.},
+	journal = {ACM Trans. Algorithms},
+	month = {jan},
+	articleno = {20},
+	numpages = {43},
+	keywords = {Lempel-Ziv compression, compressed pattern matching, Pattern matching, straight-line programs, algorithms for compressed data}
+}
+
 @article{jez:2016,
 	author = {Je{\.z}, Artur},
 	title = {Recompression: A Simple and Powerful Technique for Word Equations},
@@ -148,3 +184,5 @@
 	abstract="One of the most intricate algorithms related to words is Makanin's algorithm solving word equations. The algorithm is very complicated and the complexity of the problem of solving word equations is not well understood. Word equations can be used to define various properties of strings, e.g. general versions of pattern-matching with variables. This paper is devoted to introduce a new approach and to study relations between Lempel-Ziv compressions and word equations. Instead of dealing with very long solutions we propose to deal with their Lempel-Ziv encodings. As our first main result we prove that each minimal solution of a word equation is highly compressible (exponentially compressible for long solutions) in terms of Lempel-Ziv encoding. A simple algorithm for solving word equations is derived. If the length of minimal solution is bounded by a singly exponential function (which is believed to be always true) then LZ encoding of each minimal solution is of a polynomial size (though the solution can be exponentially long) and solvability can be checked in nondeterministic polynomial time. As our second main result we prove that the solvability can be tested in polynomial deterministic time if the lengths of all variables are given in binary. We show also that lexicographically first solution for given lengths of variables is highly compressible in terms of Lempel-Ziv encodings.",
 	isbn="978-3-540-68681-1"
 }
+
+

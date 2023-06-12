@@ -273,6 +273,10 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	{&a\ b&\ &\alertBlue{a}&\ &\alertBlue{b}\ \alertGreen{a}&\ &\alertGreen{b}}%
 	{&&&\br{3}{\var{x}}}
 	\] because $ ab $ has two crossing occurrences \alertBlue{ab} and \alertGreen{ab}, i.e., occurrences coming neither from $ U $ or $ V $ nor from $ \varphi(\var{x}) $ for some $ \var{x} $.
+	
+	\begin{definition}[Pair types]
+		a
+	\end{definition}
 \end{frame}
 
 \begin{frame}
@@ -513,7 +517,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 		{&&&\br{5}{\var{x}}&&&&&&&&&&\br{1}{\var{y}}}
 		\]
 	}\only<4-|handout:4->{
-		\stepdown{Compress $ \freshVar{a_4}c \rightsquigarrow \alertBlue{e} $ ($ ab $ is guaranteed to be non-crossing)}\[
+		\stepdown{Compress $ \freshVar{a_4}c \rightsquigarrow \alertBlue{e} $ ($ \freshVar{a_4}c $ is guaranteed to be non-crossing)}\[
 		\overunderbraces{&&&&&&&\br{1}{\var{y}}&&&&\br{5}{\var{x}}}
 		{&c&\ &\anotherFreshVar{d}&\ &c&\ &b&\ &\alertBlue{e}&\ &\anotherFreshVar{d}&\ &c&\ &b&\ &\freshVar{a_2}}
 		{&&&\br{5}{\var{x}}&&&&&&&&\br{1}{\var{y}}}
@@ -535,103 +539,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	We analyze one iteration of the main loop (``one phase'') where $ U_1 = V_1 $ gets rewritten to $ U_4 = V_4 $.
 	
 	\begin{center}
-		\begin{tikzpicture}
-			% config
-			
-			\coordinate (blockwidth) at (2, 0);
-			\coordinate (blockheight) at (0, 1.5);
-			\coordinate (blockspacing) at (1, 0);
-			\coordinate (stagearrlen) at (0, 1);
-			
-			% first block
-			
-			\coordinate (block1tl) at (0, 0);
-			\coordinate (block1bl) at ($ (block1tl) - (blockheight) $);
-			\coordinate (block1tr) at ($ (block1tl) + (blockwidth) $);
-			\coordinate (block1br) at ($ (block1tr) - (blockheight) $);
-			\coordinate (block1tc) at ($ (block1tl)!0.5!(block1tr) $);
-			\coordinate (block1bc) at ($ (block1bl)!0.5!(block1br) $);
-			\coordinate (block1rc) at ($ (block1tr)!0.5!(block1br) $);
-			
-			% second block
-
-			\coordinate (block2tl) at ($ (block1tr) + (blockspacing) $);
-			\coordinate (block2bl) at ($ (block2tl) - (blockheight) $);
-			\coordinate (block2tr) at ($ (block2tl) + (blockwidth) $);
-			\coordinate (block2br) at ($ (block2tr) - (blockheight) $);
-			\coordinate (block2tc) at ($ (block2tl)!0.5!(block2tr) $);
-			\coordinate (block2bc) at ($ (block2bl)!0.5!(block2br) $);
-			\coordinate (block2lc) at ($ (block2tl)!0.5!(block2bl) $);
-			\coordinate (block2rc) at ($ (block2tr)!0.5!(block2br) $);
-			
-			% third block
-			
-			\coordinate (block3tl) at ($ (block2tr) + (blockspacing) $);
-			\coordinate (block3bl) at ($ (block3tl) - (blockheight) $);
-			\coordinate (block3tr) at ($ (block3tl) + (blockwidth) $);
-			\coordinate (block3br) at ($ (block3tr) - (blockheight) $);
-			\coordinate (block3tc) at ($ (block3tl)!0.5!(block3tr) $);
-			\coordinate (block3bc) at ($ (block3bl)!0.5!(block3br) $);
-			\coordinate (block3lc) at ($ (block3tl)!0.5!(block3bl) $);
-			\coordinate (block3rc) at ($ (block3tr)!0.5!(block3br) $);
-			
-			% fourth block
-			
-			\coordinate (block4tl) at ($ (block3tr) + (blockspacing) $);
-			\coordinate (block4bl) at ($ (block4tl) - (blockheight) $);
-			\coordinate (block4tr) at ($ (block4tl) + (blockwidth) $);
-			\coordinate (block4br) at ($ (block4tr) - (blockheight) $);
-			\coordinate (block4tc) at ($ (block4tl)!0.5!(block4tr) $);
-			\coordinate (block4bc) at ($ (block4bl)!0.5!(block4br) $);
-			\coordinate (block4lc) at ($ (block4tl)!0.5!(block4bl) $);
-			
-			% stages
-			
-			\coordinate (stage12arrend) at ($ (block1rc)!0.5!(block2lc) $);
-			\coordinate (stage23arrend) at ($ (block2rc)!0.5!(block3lc) $);
-			\coordinate (stage34arrend) at ($ (block3rc)!0.5!(block4lc) $);
-			
-			\coordinate (stage12arrbegin) at ($ (stage12arrend) + (stagearrlen) $);
-			\coordinate (stage23arrbegin) at ($ (stage23arrend) + 1.5*(stagearrlen) $);
-			\coordinate (stage34arrbegin) at ($ (stage34arrend) + (stagearrlen) $);
-			
-			% content of first block
-			\draw ($ (block1tc)!0.33!(block1bc) $) node [rounded corners, draw=blue, fill=white] {$ U_1 = V_1 $};
-			\draw ($ (block1tc)!0.75!(block1bc) $) node {Size: $ n_1 $};
-			
-			% content of second block
-			\draw ($ (block2tc)!0.33!(block2bc) $) node [rounded corners, draw=blue, fill=white] {$ U_2 = V_2 $};
-			\draw ($ (block2tc)!0.75!(block2bc) $) node {Size: $ n_2 $};
-			
-			% content of third block
-			\draw ($ (block3tc)!0.33!(block3bc) $) node [rounded corners, draw=blue, fill=white] {$ U_3 = V_3 $};
-			\draw ($ (block3tc)!0.75!(block3bc) $) node {Size: $ n_3 $};
-			
-			% content of fourth block
-			\draw ($ (block4tc)!0.33!(block4bc) $) node [rounded corners, draw=blue, fill=white] {$ U_4 = V_4 $};
-			\draw ($ (block4tc)!0.75!(block4bc) $) node {Size: $ n_4 $};
-			
-			% arrows between blocks
-			\draw[->, thick] (block1rc) -- (block2lc);
-			\draw[->, thick] (block2rc) -- (block3lc);
-			\draw[->, thick] (block3rc) -- (block4lc);
-			
-			% stage arrows
-			\draw[->, thick] (stage12arrbegin) -- (stage12arrend);
-			\draw[->, thick] (stage23arrbegin) -- (stage23arrend);
-			\draw[->, thick] (stage34arrbegin) -- (stage34arrend);
-			
-			% stage titles
-			\node[anchor=south] at (stage12arrbegin) {Block compression};
-			\node[anchor=south] at (stage23arrbegin) {Pair compression};
-			\node[anchor=south] at (stage34arrbegin) {Pair compression};
-			
-			% draw block boxes
-			\draw[thick] (block1tl) -- (block1tr) -- (block1br) -- (block1bl) -- cycle;
-			\draw[thick] (block2tl) -- (block2tr) -- (block2br) -- (block2bl) -- cycle;
-			\draw[thick] (block3tl) -- (block3tr) -- (block3br) -- (block3bl) -- cycle;
-			\draw[thick] (block4tl) -- (block4tr) -- (block4br) -- (block4bl) -- cycle;
-		\end{tikzpicture}
+		\input{alg_analysis}
 	\end{center}
 
 	\begin{columns}
@@ -666,38 +574,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \end{frame}
 
 \begin{frame}
-	\frametitle{Preliminary observations}
-	
-	For the sake of convenience, we introduce the notion of a \textit{symbol}.
-	
-	\begin{center}
-		\begin{tikzpicture}[
-			grow=down,
-			edge from parent/.style = {draw, -latex},
-			sibling distance        = 13em,
-			level distance          = 4em,
-			]
-			\node {Symbol}
-			child {node {$ a \in \Gamma $}}
-			child {node {Block $ a^l $ popped from some variable $ \var{x} $}}
-			child {node {Variable $ \var{x} $}};
-		\end{tikzpicture}
-	\end{center}
-	
-	\pause
-	
-	\begin{itemize}
-		\item The algorithm never changes the number of variable occurrences in the equation.
-		\item Let that number be $ m $.
-		\item Pair compression introduces at most $ 2m $ symbols.
-		\item Block compression also introduces at most $ 2m $ symbols.
-	\end{itemize}
-	
-	$ \rightsquigarrow $ One phase introduces at most $ 6m $ symbols into the equation.
-\end{frame}
-
-\begin{frame}
-	\frametitle{Compression of the solution $ \varphi(U) $}
+	\frametitle{Compression of the solution}
 	
 	We analyze how many letters of the solution $ \varphi(U) $ are compressed after \textbf{Block compression} followed by (one iteration of) \textbf{Pair compression}.
 	
@@ -706,7 +583,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 			\varphi(U) = w_1 w_2 \dots w_{N/3}
 		\] (w.l.o.g. $ N $ is divisible by $ 3 $).
 		\item Consider $ w_i = abc $ and let all probabilities be over the space of partitions of $ \Gamma $.
-		\item Let $ C_i : \Omega \rightarrow \{0, 1\} $ be a variable indicating whether at least one letter in $ w_i $ is compressed.
+		\item Let $ C_i : \Omega \rightarrow \{0, 1\} $ be a random variable indicating whether at least one letter in $ w_i $ is compressed.
 		\item If $ a \neq b $ and $ b \neq c $, then \[
 			\Pr[C_i = 1] = \Pr[ab \in \Gamma_l \Gamma_r \vee bc \in \Gamma_l \Gamma_r]
 		\]
@@ -715,7 +592,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \end{frame}
 
 \begin{frame}
-	\frametitle{Compression of the solution $ \varphi(U) $}
+	\frametitle{Compression of the solution}
 	
 	\begin{itemize}
 		\item Similarly, but for a different reason:
@@ -732,7 +609,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \end{frame}
 
 \begin{frame}
-	\frametitle{Compression of the solution $ \varphi(U) $}
+	\frametitle{Compression of the solution}
 
 	\begin{itemize}
 		\item Now suppose $ a = b $ or $ b = c $.
@@ -752,13 +629,15 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \end{frame}
 
 \begin{frame}
-	\frametitle{Compression of the solution $ \varphi(U) $}
+	\frametitle{Compression of the solution}
 	
 	We now count the expected number of compressed $ w_i $ blocks: \begin{align*}
 		\ExpVal\Bigg[\sum_{i=1}^{N/3} C_i\Bigg] &= \sum_{i=1}^{N/3} \ExpVal[C_i] \\
 		&= \sum_{i=1}^{N/3} \Pr[C_i = 1] \\
 		&\ge \sum_{i=1}^{N/3} 1/2 \ge \left\lfloor N/6\right\rfloor
 	\end{align*}
+
+	\pause
 
 	$ \rightsquigarrow $ There exists a partition $ \Gamma = \Gamma_l \cup \Gamma_r $ such that $ \left\lfloor N/6\right\rfloor $ letters get compressed.
 	
@@ -774,6 +653,8 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 		\item We have just shown that $ O(\log(N)) $ phases are sufficient to ensure soundness and completeness.
 		\item But what running time do we obtain in terms of the size of the input equation?
 	\end{itemize}
+
+	\pause
 	
 	\begin{theorem}[\cite{plandowski:1999}]
 		Let $ N $ be the size of the length-minimal solution to a word equation of size $ n $. Then \[
@@ -788,7 +669,199 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \end{frame}
 
 \begin{frame}
+	\frametitle{Space complexity analysis -- overview}
+	
+	\begin{itemize}
+		\item We have shown the exponential time complexity of the recompression algorithm.
+		\item But what about space complexity?
+		\item Recall:
+	\end{itemize}
+	\begin{center}
+		\input{alg_analysis}
+	\end{center}
+	\begin{itemize}
+		\item We show that at any point during the algorithm the size of the equation is linear, i.e., at most $ kn $ for some constant $ k $.
+		\item For this, it suffices to show that $ n_1 \le kn $ implies $ n_4 \le kn $.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Preliminary observations}
+	
+	For the sake of convenience, we introduce the notion of a \textit{symbol}.
+	
+	\begin{center}
+		\begin{tikzpicture}[
+			grow=down,
+			edge from parent/.style = {draw, -latex},
+			sibling distance        = 13em,
+			level distance          = 4em,
+			]
+			\node {Symbol}
+			child {node {$ a \in \Gamma $}}
+			child {node {Block $ a^l $ popped from some variable $ \var{x} $}};
+			% child {node {Variable $ \var{x} $}};
+		\end{tikzpicture}
+	\end{center}
+	
+	\pause
+	
+	\begin{itemize}
+		\item The algorithm never changes the number of variable occurrences in the equation.
+		\item Let that number be $ m $.
+		\item Pair compression introduces at most $ 2m $ symbols.
+		\item Block compression also introduces at most $ 2m $ symbols.
+	\end{itemize}
+	
+	$ \rightsquigarrow $ One phase introduces at most $ 6m $ symbols into the equation.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Compression of the equation}
+	
+	We analyze how many letters in the current equation are compressed after the second execution of \textbf{Pair compression}.
+	
+	\begin{center}
+		\input{alg_analysis}
+	\end{center}
+
+	I.e., what is the relationship between $ n_3 $ and $ n_4 $?
+	
+	\pause
+	
+	\begin{itemize}
+		\item Clearly, $ U_2 = V_2 $ doesn't contain any $ a^k $ block for $ k \ge 2 $.
+		\item Hence, $ U_3 = V_3 $ doesn't contain any $ a^k $ block for $ k \ge 3 $ (note that here we implicitly rely on the fact that no character $ a \in \Gamma $ can be popped both to the right of some variable, as well as to the left of it, see the implementation of $ \pop $ and note that $ \Gamma_l \cap \Gamma_r = \varnothing $ is crucial).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Compression of the equation}
+	
+	\begin{center}
+		\input{alg_analysis}
+	\end{center}
+	
+	Write \begin{center}
+		\begin{tabular}{c c c}
+			$ U_3 $ & $ = $ & $ V_3 $ \\
+			\rotatebox[origin=c]{90}{$ = $} && \rotatebox[origin=c]{90}{$ = $} \\
+			$ u_1 x_1 u_2 x_2 u_3 \dots u_l x_l u_{l+1} $ & $ = $ & $ u_{l+2} x_{l+1} u_{l+3} \dots u_{m+1} x_m u_{m+2} $
+		\end{tabular}
+	\end{center} where $ u_i \in \Gamma^* $ (w.l.o.g., $ u_i $ is defined for all $ i \in \{1, \dots, m+2\} $).
+
+	\begin{itemize}
+		\item Clearly, $ \sum_{i=1}^{m+2} \left|u_i\right| = \left| u_1 u_2 \dots u_{m+2} \right| \ge n_3 - m $.
+		\item Every $ u_i $ can be split into $ \left\lfloor {\left|u_i\right|}/3 \right\rfloor \ge {\left|u_i\right|}/3 - 2/3 $ three-letter segments.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Compression of the equation}
+	
+	$ \rightsquigarrow $ The overall number of three-letter segments we can find in $ U_3 = V_3 $ is at least \begin{align*}
+		\sum_{i=1}^{m+2} \Bigg(\frac{\left|u_i\right|}{3} - \frac{2}{3}\Bigg) &= \frac{\sum_{i=1}^{m+2} \left|u_i\right|}{3} - \frac{2(m+2)}{3} \\
+		&\ge \frac{n_3 - m}{3} - \frac{2m+4}{3} \\
+		&= \frac{n_3 - 3m - 4}{3}
+	\end{align*}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Compression of the equation}
+	
+	\begin{itemize}
+		\item Let $ w_j = abc $ be a three-letter segment of an arbitrary $ u_i $.
+		\item Let $ C_j : \Omega \rightarrow \{0, 1\} $ be a random variable indicating whether at least one letter in $ w_j $ is compressed.
+		\item Since $ U_3 = V_3 $ cannot contain any $ a^k $ block for any $ a \in \Gamma $ and $ k \ge 3 $ (see previous slides), it follows that $ a \neq b $ or $ b \neq c $.
+		\item In any event, \[
+			\Pr[C_j = 1] \ge 1/4
+		\]
+		\item Using the bound of the previous slide, we obtain that the expected number of compressed $ w_j $ blocks in the entire $ U_3 = V_3 $ equation is at least \begin{align*}
+			\ExpVal\Bigg[\sum_{j=1}^{(n_3-3m-4)/3} C_j\Bigg] &= \sum_{j=1}^{(n_3-3m-4)/3} \ExpVal[C_j] = \sum_{j=1}^{(n_3-3m-4)/3} \Pr[C_j = 1] \\
+			&\ge \sum_{i=1}^{(n_3-3m-4)/3} 1/4 = \frac{n_3 - 3m - 4}{12}
+		\end{align*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Size of the equation}
+	
+	\begin{center}
+		\input{alg_analysis}
+	\end{center}
+
+	\begin{itemize}
+		\item Recall that our overall goal was to show that $ n_1 \le kn $ implies $ n_4 \le kn $ for an appropriate constant $ k $.
+		\item Since \textbf{Pair compression} introduces at most $ 2m $ new symbols into the equation (see previous slides), and at least $ (n_3 - 3m - 4)/12 $ letters get compressed in the second iteration of \textbf{Pair compression} (for an appropriate choice of $ \Gamma_l $, $ \Gamma_r $), \[
+			n_4 \le n_3 + 2m - \frac{n_3 - 3m - 4}{12}
+		\]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Size of the equation}
+	
+	\begin{itemize}
+		\item Hence, \begin{align*}
+			n_4 &\le n_3 + 2m - \frac{n_3 - 3m - 4}{12} = \frac{12 n_3 + 24 m - n_3 + 3m + 4}{12} \\
+			&= \frac{11 n_3 + 27 m + 4}{12} \overset{n_3 \le n_1 + 4m}{\le} \frac{11 n_1 + 44 m + 27 m + 4}{12} \\
+			&= \frac{11 n_1 + 71 m + 4}{12} \overset{n_1 \le kn}{\le} \frac{11 kn + 71 m + 4}{12} \overset{m \le n}{\le} \frac{11 kn + 71 n + 4}{12} \\
+			&\overset{n \ge 4}{\le} \frac{11 kn + 72 n}{12} = \Bigg(\frac{11}{12}k + 6\Bigg)n \overset{\text{Goal}}{\le} kn
+		\end{align*}
+		\item Indeed, the last inequality is equivalent to $ (11/12)k + 6 \le k $ and thus holds for all $ k \ge 12 \cdot 6 = 72 $.
+		\item In the calculation we used the fact that $ n_3 \le n_1 + 4m $; this is because \textit{Pair compression} and \textit{Block compression} each can introduce at most $ 2m $ new symbols into the equation.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Size of the equation and space complexity}
+	
+	\begin{itemize}
+		\item We conclude that for any satisfiable word equation $ U = V $ there exist nondeterministic choices leading to an accepting run of the recompression algorithm with all intermediate equations having size at most $ 72n \in O(n) $.
+		\item This bound is on the amount of symbols and variables, not bits.
+		\item Clearly, every variable $ \var{x} \in \X $ and letter $ a \in \Gamma $ can be encoded using $ O(\log(n)) $ bits.
+	\end{itemize}
+
+	$ \rightsquigarrow $ The symbols and variables appearing in the equation can be encoded using $ O(n \log(n)) $ bits in total.
+\end{frame}
+
+\begin{frame}
 	\frametitle{Space complexity}
+	
+	\begin{itemize}
+		\item But what about the space required to store blocks $ a^l $ that got popped from some variable $ \var{x} $?
+		\item To properly bound that space, we need the following result by Ko{\'{s}}cielski and Pacholski:
+	\end{itemize}
+
+	\begin{lemma}[Exponent of periodicity bound \cite{koscielski_pacholski:1996}]
+		Let $ \varphi $ be a length-minimal solution to a word equation $ U = V $ of size $ n $. Suppose $ \varphi(U) $ has a substring $ w^l $ for some $ w \in \Gamma^+ $. Then $ l \in 2^{O(n)} $.
+	\end{lemma}
+
+	$ \rightsquigarrow $ Every block $ a^l $ popped from some variable by \cutprefsuff{} can be encoded using $ O(n) $ bits using binary encoding.
+	
+	$ \rightsquigarrow $ The space complexity of the recompression algorithm is $ O(n^2) $ (bits).
+\end{frame}
+
+\begin{frame}
+	\frametitle{Conclusion}
+	
+	Overall, we have shown:
+	
+	\begin{theorem}
+		The recompression algorithm for word equations runs in nondeterministic $ O(\poly(n)\log(N)) $ time and uses $ O(n^2) $ space, where $ N $ is the size of the length-minimal solution. In terms of $ n $, the time complexity is $ O(2^{\poly(n)}) $.
+	\end{theorem}
+
+	\begin{corollary}
+		If the size $ N $ of the length-minimal solution to every word equation is in $ O(2^{\poly(n)}) $, then word equations are in $ \NP $.
+	\end{corollary}
+
+	This motivates the following question:
+	
+	\begin{openproblem}{Open problem}
+		Does every word equation have a solution of exponential size?
+	\end{openproblem}
+
+	\textbf{Best known lower bound}: $ 2^{o(n)} $
 \end{frame}
 
 \begin{frame}[allowframebreaks]

@@ -1,0 +1,97 @@
+\begin{tikzpicture}
+	% config
+	
+	\coordinate (blockwidth) at (2, 0);
+	\coordinate (blockheight) at (0, 1.5);
+	\coordinate (blockspacing) at (1, 0);
+	\coordinate (stagearrlen) at (0, 1);
+	
+	% first block
+	
+	\coordinate (block1tl) at (0, 0);
+	\coordinate (block1bl) at ($ (block1tl) - (blockheight) $);
+	\coordinate (block1tr) at ($ (block1tl) + (blockwidth) $);
+	\coordinate (block1br) at ($ (block1tr) - (blockheight) $);
+	\coordinate (block1tc) at ($ (block1tl)!0.5!(block1tr) $);
+	\coordinate (block1bc) at ($ (block1bl)!0.5!(block1br) $);
+	\coordinate (block1rc) at ($ (block1tr)!0.5!(block1br) $);
+	
+	% second block
+	
+	\coordinate (block2tl) at ($ (block1tr) + (blockspacing) $);
+	\coordinate (block2bl) at ($ (block2tl) - (blockheight) $);
+	\coordinate (block2tr) at ($ (block2tl) + (blockwidth) $);
+	\coordinate (block2br) at ($ (block2tr) - (blockheight) $);
+	\coordinate (block2tc) at ($ (block2tl)!0.5!(block2tr) $);
+	\coordinate (block2bc) at ($ (block2bl)!0.5!(block2br) $);
+	\coordinate (block2lc) at ($ (block2tl)!0.5!(block2bl) $);
+	\coordinate (block2rc) at ($ (block2tr)!0.5!(block2br) $);
+	
+	% third block
+	
+	\coordinate (block3tl) at ($ (block2tr) + (blockspacing) $);
+	\coordinate (block3bl) at ($ (block3tl) - (blockheight) $);
+	\coordinate (block3tr) at ($ (block3tl) + (blockwidth) $);
+	\coordinate (block3br) at ($ (block3tr) - (blockheight) $);
+	\coordinate (block3tc) at ($ (block3tl)!0.5!(block3tr) $);
+	\coordinate (block3bc) at ($ (block3bl)!0.5!(block3br) $);
+	\coordinate (block3lc) at ($ (block3tl)!0.5!(block3bl) $);
+	\coordinate (block3rc) at ($ (block3tr)!0.5!(block3br) $);
+	
+	% fourth block
+	
+	\coordinate (block4tl) at ($ (block3tr) + (blockspacing) $);
+	\coordinate (block4bl) at ($ (block4tl) - (blockheight) $);
+	\coordinate (block4tr) at ($ (block4tl) + (blockwidth) $);
+	\coordinate (block4br) at ($ (block4tr) - (blockheight) $);
+	\coordinate (block4tc) at ($ (block4tl)!0.5!(block4tr) $);
+	\coordinate (block4bc) at ($ (block4bl)!0.5!(block4br) $);
+	\coordinate (block4lc) at ($ (block4tl)!0.5!(block4bl) $);
+	
+	% stages
+	
+	\coordinate (stage12arrend) at ($ (block1rc)!0.5!(block2lc) $);
+	\coordinate (stage23arrend) at ($ (block2rc)!0.5!(block3lc) $);
+	\coordinate (stage34arrend) at ($ (block3rc)!0.5!(block4lc) $);
+	
+	\coordinate (stage12arrbegin) at ($ (stage12arrend) + (stagearrlen) $);
+	\coordinate (stage23arrbegin) at ($ (stage23arrend) + 1.5*(stagearrlen) $);
+	\coordinate (stage34arrbegin) at ($ (stage34arrend) + (stagearrlen) $);
+	
+	% content of first block
+	\draw ($ (block1tc)!0.33!(block1bc) $) node [rounded corners, draw=blue, fill=white] {$ U_1 = V_1 $};
+	\draw ($ (block1tc)!0.75!(block1bc) $) node {Size: $ n_1 $};
+	
+	% content of second block
+	\draw ($ (block2tc)!0.33!(block2bc) $) node [rounded corners, draw=blue, fill=white] {$ U_2 = V_2 $};
+	\draw ($ (block2tc)!0.75!(block2bc) $) node {Size: $ n_2 $};
+	
+	% content of third block
+	\draw ($ (block3tc)!0.33!(block3bc) $) node [rounded corners, draw=blue, fill=white] {$ U_3 = V_3 $};
+	\draw ($ (block3tc)!0.75!(block3bc) $) node {Size: $ n_3 $};
+	
+	% content of fourth block
+	\draw ($ (block4tc)!0.33!(block4bc) $) node [rounded corners, draw=blue, fill=white] {$ U_4 = V_4 $};
+	\draw ($ (block4tc)!0.75!(block4bc) $) node {Size: $ n_4 $};
+	
+	% arrows between blocks
+	\draw[->, thick] (block1rc) -- (block2lc);
+	\draw[->, thick] (block2rc) -- (block3lc);
+	\draw[->, thick] (block3rc) -- (block4lc);
+	
+	% stage arrows
+	\draw[->, thick] (stage12arrbegin) -- (stage12arrend);
+	\draw[->, thick] (stage23arrbegin) -- (stage23arrend);
+	\draw[->, thick] (stage34arrbegin) -- (stage34arrend);
+	
+	% stage titles
+	\node[anchor=south] at (stage12arrbegin) {Block compression};
+	\node[anchor=south] at (stage23arrbegin) {Pair compression};
+	\node[anchor=south] at (stage34arrbegin) {Pair compression};
+	
+	% draw block boxes
+	\draw[thick] (block1tl) -- (block1tr) -- (block1br) -- (block1bl) -- cycle;
+	\draw[thick] (block2tl) -- (block2tr) -- (block2br) -- (block2bl) -- cycle;
+	\draw[thick] (block3tl) -- (block3tr) -- (block3br) -- (block3bl) -- cycle;
+	\draw[thick] (block4tl) -- (block4tr) -- (block4br) -- (block4bl) -- cycle;
+\end{tikzpicture}

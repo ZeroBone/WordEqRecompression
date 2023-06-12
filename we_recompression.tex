@@ -204,7 +204,9 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 \begin{frame}
 	\frametitle{Central idea}
 	
-	\textbf{Idea}: nondeterministically compress the given word equation $ U = V $ in a sound and complete way.
+	\textbf{Idea}: nondeterministically and iteratively compress the given word equation $ U = V $ in a sound and complete way.
+	
+	\textbf{One compression step}:
 	
 	\begin{center}
 		\begin{tikzpicture}[
@@ -718,7 +720,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	\begin{itemize}
 		\item Similarly, but for a different reason:
 		\item If $ ab $ is implicit, then \pop{$ \Gamma_l $, $ \Gamma_r $} also makes $ ab $ explicit whereupon $ ab $ will get compressed.
-		\item This is because if all occurrences of $ ab $ are implicit, the solution $ \varphi $ is not length-minimal as we can get a shorter solution by defining $ \varphi' $ with $ \varphi'(\var{x}) $ set to $ \varphi(\var{x}) $ with every $ ab $ replaced by $ \varepsilon $ (see \cite[Lemma 2.4]{jez:2016} and \cite[Lemma 6]{plandowsky_rytter:1998}).
+		\item This is because if all occurrences of $ ab $ are implicit, the solution $ \varphi $ is not length-minimal as we can get a shorter solution by defining $ \varphi' $ with $ \varphi'(\var{x}) $ set to $ \varphi(\var{x}) $ with every $ ab $ replaced by $ \varepsilon $ (see \cite[Lemma 6]{plandowsky_rytter:1998} and \cite[Lemma 2.4]{jez:2016}).
 		\item This is a contradiction because it can be assumed that we are compressing a length-minimal solution.
 		\item Hence, \begin{align*}
 			\Pr[C_i = 1] &= \Pr[ab \in \Gamma_l \Gamma_r \vee bc \in \Gamma_l \Gamma_r] \\
@@ -738,7 +740,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 		\item \textbf{Case 1}: The $ d^k $ occurrence is not implicit $ \Rightarrow $ \cutprefsuff{} makes $ d^k $ explicit $ \Rightarrow $ The $ d^k $ occurrence gets compressed.
 		\item \textbf{Case 2}: Suppose the $ d^k $ occurrence is implicit.
 		\item Then either some other occurrence of $ d^k $ causes $ d^k $ to get compressed, or all maximal $ d^k $ blocks are implicit.
-		\item The latter implies that $ \varphi $ is not length-minimal because all occurrences of maximal $ d^k $ blocks can be deleted from the solution. This is a contradiction.
+		\item The latter implies that $ \varphi $ is not length-minimal because all occurrences of maximal $ d^k $ blocks can be deleted from the solution (ibid). This is a contradiction.
 		\item Hence,
 	\end{itemize}
 
@@ -746,15 +748,47 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 		\fbox{
 			\parbox{0.5\textwidth}{\begin{center}$ \Pr[C_i = 1] \ge 1/2 $\end{center}}
 		}
-	\end{center}\end{frame}
+	\end{center}
+\end{frame}
 
 \begin{frame}
-	\begin{lemma}[Restated, cf. \cite{jez:2016, plandowsky_rytter:1998}]
-		Let $ \varphi $ be a length-minimal solution to $ U = V $. If $ a^k \neq \varepsilon $ is a maximal block in $ \varphi(U) $, then there exists an \textit{explicit} or \textit{crossing} occurrence of a maximal block $ a^k $ in $ \varphi(U) $, i.e., an occurrence where at least one $ a $ of $ a^k $ corresponds to an $ a $ appearing in either $ U $ or $ V $.
-	\end{lemma}
-	\begin{proof}
-		Suppose all occurrences of the maximal block $ a^k $ were \textit{implicit}, i.e., were substrings of $ \varphi(\var{x}) $ for some $ \var{x} \in \X $. For each such occurrence, there w.l.o.g. exist $ b, c \in \Gamma $ such that $ ba^kc $ is a substring of $ \varphi(U) $ for some $ b \neq a \neq c $; replace every such occurrence 
-	\end{proof}
+	\frametitle{Compression of the solution $ \varphi(U) $}
+	
+	We now count the expected number of compressed $ w_i $ blocks: \begin{align*}
+		\ExpVal\Bigg[\sum_{i=1}^{N/3} C_i\Bigg] &= \sum_{i=1}^{N/3} \ExpVal[C_i] \\
+		&= \sum_{i=1}^{N/3} \Pr[C_i = 1] \\
+		&\ge \sum_{i=1}^{N/3} 1/2 \ge \left\lfloor N/6\right\rfloor
+	\end{align*}
+
+	$ \rightsquigarrow $ There exists a partition $ \Gamma = \Gamma_l \cup \Gamma_r $ such that $ \left\lfloor N/6\right\rfloor $ letters get compressed.
+	
+	\vspace{0.5em}
+	
+	$ \rightsquigarrow $ For appropriate nondeterministic choices, the recompression algorithm terminates after $ O(\log(N)) $ phases, where $ N $ is the size of the length-minimal solution.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Time complexity}
+	
+	\begin{itemize}
+		\item We have just shown that $ O(\log(N)) $ phases are sufficient to ensure soundness and completeness.
+		\item But what running time do we obtain in terms of the size of the input equation?
+	\end{itemize}
+	
+	\begin{theorem}[\cite{plandowski:1999}]
+		Let $ N $ be the size of the length-minimal solution to a word equation of size $ n $. Then \[
+			N \in O(2^{2^{\poly(n)}})
+		\]
+	\end{theorem}
+
+	Consequently:
+	\begin{theorem}
+		The recompression algorithm runs in time exponential in the size of the word equation.
+	\end{theorem}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Space complexity}
 \end{frame}
 
 \begin{frame}[allowframebreaks]

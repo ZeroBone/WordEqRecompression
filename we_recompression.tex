@@ -608,7 +608,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 		\item Hence, \begin{align*}
 			\Pr[C_i = 1] &= \Pr[ab \in \Gamma_l \Gamma_r \vee bc \in \Gamma_l \Gamma_r] \\
 			&= \Pr[ab \in \Gamma_l \Gamma_r] + \Pr[bc \in \Gamma_l \Gamma_r] \\
-			&= 1/4 + 1/4 = 1/2
+			&\ge 1/4 + 1/4 = 1/2
 		\end{align*}
 	\end{itemize}
 
@@ -623,7 +623,7 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 		\item \textbf{Case 1}: The $ d^k $ occurrence is not implicit $ \Rightarrow $ \cutprefsuff{} makes $ d^k $ explicit $ \Rightarrow $ The $ d^k $ occurrence gets compressed.
 		\item \textbf{Case 2}: Suppose the $ d^k $ occurrence is implicit.
 		\item Then either some other occurrence of $ d^k $ causes $ d^k $ to get compressed, or all maximal $ d^k $ blocks are implicit.
-		\item The latter implies that $ \varphi $ is not length-minimal because all occurrences of maximal $ d^k $ blocks can be deleted from the solution (ibid). This is a contradiction.
+		\item The latter implies that $ \varphi $ is not length-minimal because all occurrences of maximal $ d^k $ blocks can be deleted from the solution (ibid.). This is a contradiction.
 		\item Hence,
 	\end{itemize}
 
@@ -669,8 +669,9 @@ Fix some finite alphabet $ \Gamma $ and set of variables $ \X $.
 	\end{theorem}
 
 	Consequently:
+	
 	\begin{theorem}
-		The recompression algorithm runs in time exponential in the size of the given word equation.
+		The recompression algorithm runs in nondeterministic exponential time.
 	\end{theorem}
 \end{frame}
 
